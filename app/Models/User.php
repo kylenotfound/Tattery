@@ -17,7 +17,7 @@ class User extends Authenticatable {
      * @var string[]
      */
     protected $fillable = [
-        'external_id', 'name', 'display_name', 'email', 'password', 'avatar', 'bio'
+        'external_id', 'name', 'display_name', 'email', 'password', 'avatar', 'bio', 'unique_storage_dir'
     ];
 
     /**
@@ -56,6 +56,14 @@ class User extends Authenticatable {
 
     public function getBio() {
         return $this->bio;
+    }
+
+    public function getAvatar() {
+        return $this->avatar;
+    }
+
+    public function getStorageDir() {
+        return $this->unique_storage_dir;
     }
 
     /**

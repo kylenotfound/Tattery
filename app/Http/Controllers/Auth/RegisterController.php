@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Storage;
+use File;
 
 class RegisterController extends Controller {
     /*
@@ -63,11 +65,21 @@ class RegisterController extends Controller {
      * @return \App\Models\User
      */
     protected function create(array $data) {
-        return User::create([
+        $path = microtime(true);
+
+        $user = User::create([
             'name' => $data['name'],
             'display_name' => $data['display_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'unique_storage_dir' => $path
         ]);
+
+        //create photo dir for each user on registration!
+        File::makeDirectory(public_path().'/users/'.$path, 0777, true);
+        //copy default profile picture into the dir
+        File::copy(public_path('user.png'), public_path('/users/'.$path.'/user.png'));
+
+        return $user;
     }
 }

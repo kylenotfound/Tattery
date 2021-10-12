@@ -24,8 +24,9 @@
 
   <!--If the user logged in is the same user that owns the profile, display profile customization features -->
   @if(Auth::user()->id == $user->id)
+    
     <div>
-      <!-- Form for updating username (dispaly_name) -->
+      <!-- Form for updating all fields of user profile: name, username and bio (avatar soon) -->
       <span>Update Username</span>
       <form action="{{route('dash.update_profile', ['id' => $user->getDisplayName()])}}" method="POST">
         @csrf
@@ -41,7 +42,10 @@
   @endif
 
   <!-- User's profile page every user can see -->
+  
     <div>
+      <img src="/users/{{$user->getStorageDir()}}/{{$user->getAvatar()}}" widht="30" height="30">
+      <br>
       <span>{{$user->getName()}}</span>
       <br>
       <span>About {{$user->getDisplayName()}}</span>
