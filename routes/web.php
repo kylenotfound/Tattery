@@ -25,5 +25,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
  * User Profile
  */
 Route::get('/dash/{id}', [App\Http\Controllers\UserProfileController::class, 'index'])->name('dash');
-Route::post('/dash/update_display_name/{id}', [App\Http\Controllers\UserProfileController::class, 'updateDisplayName'])->name('dash.update_display_name');
-
+Route::post('/dash/update_profile/{id}', [App\Http\Controllers\UserProfileController::class, 'updateProfile'])->name('dash.update_profile');

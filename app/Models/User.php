@@ -61,14 +61,15 @@ class User extends Authenticatable {
     /**
      * Mutator functions
      */
-    public function setName($newName) {
+    public function updateName($newName) {
         $this->name = $newName;
         $this->save();
     }
 
     public function changeDisplayName($newDisplayName) {
-        if(User::where('display_name', '=', $newDisplayName)->exists()) {
-            return false;
+        //If the display name we are updating doesn't belong to another user 
+        if(User::where('display_name', '=', $newDisplayName)->exists() && !$this) {
+            return false; 
         } else {
             $this->display_name = $newDisplayName;
             $this->save();

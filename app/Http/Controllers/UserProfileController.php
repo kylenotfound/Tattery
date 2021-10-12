@@ -18,28 +18,28 @@ class UserProfileController extends Controller {
         ]);
     }
 
-    public function updateName($newName) {
-
-    }
-
-    public function updateDisplayName(Request $request) {
+    public function updateProfile(Request $request) {
         $user = Auth::user();
 
-        $validatedName = $request->validate([
-            'new_display_name' => 'required|max:16|min:3'
+        $validated = $request->validate([
+            'name' => 'min:2|max:36',
+            'new_display_name' => 'max:16|min:3',
+            'bio' => 'max:256'
         ]);
 
-        $newDisplayName = $request->input('new_display_name');
+        $newName = $request->input('name') ?? $user->getName();
+        $newBio = $request->input('bio') ?? $user->getBio();
+        $newUserName = $request->input('new_display_name') ?? $user->getDisplayName();
+
+        $user->updateName($newName);
+        $user->updateBio($newBio);
         
-        if($user->changeDisplayName($newDisplayName)) {
+        if($user->changeDisplayName($newUserName)) {
             return redirect()->route('dash', ['id' => $user->getDisplayName()])
-                ->with(['success' => 'successfully updated your username!']);
-        };
-
-        return back()->withErrors(['name already taken' => 'this username is not available!']);
-    }
-
-    public function updateBio($newBio) {
+                ->with(['success' => 'Profile Updated!']);
+        } else {
+            return back()->withErrors(['username taken' => 'this username is not available!']);
+        }
 
     }
 }
