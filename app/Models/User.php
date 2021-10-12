@@ -46,6 +46,10 @@ class User extends Authenticatable {
         return $this->name;
     }
 
+    public function getDisplayName() {
+        return $this->display_name;
+    }
+
     public function getEmail() {
         return $this->email;
     }
