@@ -17,11 +17,7 @@ class User extends Authenticatable {
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'external_id',
-        'image'
+        'external_id', 'name', 'display_name', 'email', 'password', 'avatar', 'bio'
     ];
 
     /**
@@ -42,5 +38,33 @@ class User extends Authenticatable {
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Accessor functions
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function getBio() {
+        return $this->bio;
+    }
+
+    /**
+     * Mutator functions
+     */
+    public function setName($newName) {
+        $this->name = $newName;
+        $this->save();
+    }
+
+    public function updateBio($newBio) {
+        $this->bio = $newBio;
+        $this->save();
+    }
 
 }
