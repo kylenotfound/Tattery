@@ -20,4 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+/**
+ * User Profile
+ */
 Route::get('/dash/{id}', [App\Http\Controllers\UserProfileController::class, 'index'])->name('dash');
+Route::post('/dash/update_display_name/{id}', [App\Http\Controllers\UserProfileController::class, 'updateDisplayName'])->name('dash.update_display_name');
+

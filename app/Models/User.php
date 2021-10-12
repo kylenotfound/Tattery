@@ -66,6 +66,17 @@ class User extends Authenticatable {
         $this->save();
     }
 
+    public function changeDisplayName($newDisplayName) {
+        if(User::where('display_name', '=', $newDisplayName)->exists()) {
+            return false;
+        } else {
+            $this->display_name = $newDisplayName;
+            $this->save();
+            $this->refresh();
+            return true;
+        }
+    }
+
     public function updateBio($newBio) {
         $this->bio = $newBio;
         $this->save();
