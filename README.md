@@ -47,7 +47,9 @@ Mine personally are 'root' and 'passoword' but these can be whatever you set up 
 
 ### Now that your database is setup, run the following commands:
 >composer install
+
 >npm install
+
 >npm run dev
 
 If on windows, you may need to run 
