@@ -9,10 +9,11 @@ class UserProfileController extends Controller {
     
     public function index($id) {
         $user = User::where('display_name', '=', $id)->first();
+        if ($user == null) {
+            return view('welcome')->withErrors(['user not found' => 'user does not exist']);
+        }
         return view('dash', [
-            'display_name' => $user->getDisplayName(),
-            'name' => $user->getName(),
-            'bio' => $user->getBio()
+            'user' => $user
         ]);
     }
 

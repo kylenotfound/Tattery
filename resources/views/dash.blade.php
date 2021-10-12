@@ -2,8 +2,10 @@
 
 @section('content')
 
-  <p>{{$display_name}}</p>
-  <p>{{$name}}</p>
-  <p>{{$bio}}</p>
+<p>{{$user->getName()}}</p>
+
+  @if(Auth::user()->id == $user->id)
+    <button>This will eventually allow for a photo upload/change</button>
+  @endif
 
 @endsection
