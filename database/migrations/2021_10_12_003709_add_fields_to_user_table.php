@@ -17,6 +17,7 @@ class AddFieldsToUserTable extends Migration {
             $table->string("external_id")->nullable()->after("id");
             $table->string("avatar")->after("password")->default("user.png");
             $table->string("bio")->after("avatar")->default("No bio found");
+            $table->string("virgin_status")->after("bio")->default("Virgin")->nullable();
             $table->string("unique_storage_dir")->after("bio");
         });
 

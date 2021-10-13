@@ -23,16 +23,18 @@ class UserProfileController extends Controller {
 
         $validated = $request->validate([
             'name' => 'min:2|max:36',
-            'new_display_name' => 'max:16|min:3',
+            'new_display_name' => 'min:3|max:16',
             'bio' => 'max:256'
         ]);
 
         $newName = $request->input('name') ?? $user->getName();
         $newBio = $request->input('bio') ?? $user->getBio();
         $newUserName = $request->input('new_display_name') ?? $user->getDisplayName();
+        $newVirginStatus = $request->input('virgin_status') ?? $user->getVirginStatus();
 
         $user->updateName($newName);
         $user->updateBio($newBio);
+        $user->updateVirginStatus($newVirginStatus);
         
         if($user->changeDisplayName($newUserName)) {
             return redirect()->route('dash', ['id' => $user->getDisplayName()])
