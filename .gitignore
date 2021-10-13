@@ -15,6 +15,15 @@ public/hot
 public/users/
 public_html/storage
 public_html/hot
+/public/hot
+/public/js/app.js
+/public/js/app/**/compiled.*
+/public/js/app/**/*.map
+/public/js/*.map
+/public/mix-manifest.json
+/public/storage
+/storage/*.key
+/storage/test
 
 storage/*.key
 .env
