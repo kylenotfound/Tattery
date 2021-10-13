@@ -8,9 +8,10 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Storage;
+use File;
 
-class RegisterController extends Controller
-{
+class RegisterController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -51,6 +52,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'display_name' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -62,12 +64,22 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
-    {
-        return User::create([
+    protected function create(array $data) {
+        $path = microtime(true);
+
+        $user = User::create([
             'name' => $data['name'],
+            'display_name' => $data['display_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'unique_storage_dir' => $path
         ]);
+
+        //create photo dir for each user on registration!
+        File::makeDirectory(public_path().'/users/'.$path, 0777, true);
+        //copy default profile picture into the dir
+        File::copy(public_path('user.png'), public_path('/users/'.$path.'/user.png'));
+
+        return $user;
     }
 }

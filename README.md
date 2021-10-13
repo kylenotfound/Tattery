@@ -11,6 +11,7 @@ Have the following installed:
 * [Composer](https://getcomposer.org/)
 * [Git](https://git-scm.com/downloads)
 * [MySql](https://dev.mysql.com/downloads/installer/) / [MySql Workbench](https://dev.mysql.com/downloads/workbench/)
+* [NodeJS](https://nodejs.org/en/)
 
 ### Mac:
 >brew install php@7.4
@@ -20,6 +21,8 @@ Have the following installed:
 >brew install git
 
 >brew install mysql
+
+>brew install node
 
 and the workbench (link above)
 
@@ -44,6 +47,10 @@ Mine personally are 'root' and 'passoword' but these can be whatever you set up 
 
 ### Now that your database is setup, run the following commands:
 >composer install
+
+>npm install
+
+>npm run dev
 
 If on windows, you may need to run 
 >composer install --ignore-platform-reqs
