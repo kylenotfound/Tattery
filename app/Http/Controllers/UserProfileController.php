@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Libraries\Helpers;
 use App\Models\User;
 use File;
 use Auth;
@@ -14,32 +15,26 @@ class UserProfileController extends Controller {
         if ($user == null) {
             return view('welcome')->withErrors(['user not found' => 'user does not exist']);
         }
-        //dd(File::exists(storage_path() . '/app/public/users/' . $user->getStorageDir() . '/' . $user->getAvatar()));
         return view('dash', [
             'user' => $user,
+            'avatar' => Helpers::getUserAvatar($user)
         ]);
     }
 
     public function updateProfile(Request $request) {
-        //dd($request->all());
         $user = Auth::user();
 
         $validated = $request->validate([
             'name' => 'min:2|max:36',
             'new_display_name' => 'min:3|max:16',
-            'bio' => 'max:256'
+            'bio' => 'max:256',
+            'avatar' => 'image|nullable'
         ]);
 
+        //If a new avatar image is passed, change the profile photo
         if ($request->hasFile('avatar')) {
-            //Get the user's upload path
-            $userPath = '/public/users/' . $user->getStorageDir() . '/avatars/';
-            $oldAvatar = $userPath . '/' . $user->getAvatar();
-            $newAvatar = $request->file('avatar')->getClientOriginalName();
-            $fileName = pathinfo($newAvatar, PATHINFO_FILENAME);
-            $extension = $request->file('avatar')->getClientOriginalExtension();
-            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
-            $request->file('avatar')->storeAs($userPath, $fileNameToStore);
-            $user->updateAvatar($fileNameToStore);
+            $image = $request->file('avatar');
+            self::changeProfilePhoto($user, $image);
         }
 
         $newName = $request->input('name') ?? $user->getName();
@@ -47,9 +42,10 @@ class UserProfileController extends Controller {
         $newUserName = $request->input('new_display_name') ?? $user->getDisplayName();
         $newVirginStatus = $request->input('virgin_status') ?? $user->getVirginStatus();
 
-        $user->updateName($newName);
-        $user->updateBio($newBio);
-        $user->updateVirginStatus($newVirginStatus);
+        $user->update(['name' => $newName, 
+            'bio' => $newBio, 
+            'virgin_status' => $newVirginStatus
+        ]);
         
         if($user->changeDisplayName($newUserName)) {
             return redirect()->route('dash', ['id' => $user->getDisplayName()])
@@ -58,5 +54,26 @@ class UserProfileController extends Controller {
             return back()->withErrors(['username taken' => 'this username is not available!']);
         }
 
+    }
+
+    private static function changeProfilePhoto($user, $image) {
+        //I hate this but whatever
+        //path were storing the image
+        $userPath = '/public/users/' . $user->getStorageDir() . '/avatars/';
+        //path to access the old image
+        $oldAvatar = './storage/users/' . $user->getStorageDir() . '/avatars/' . $user->getAvatar();
+        //remove the old image
+        if (File::exists($oldAvatar)) {
+            unlink($oldAvatar);
+        } 
+        //get attributes of image
+        $newAvatar = $image->getClientOriginalName();
+        $fileName = pathinfo($newAvatar, PATHINFO_FILENAME);
+        $extension = $image->getClientOriginalExtension();
+        //create new unique file name
+        $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+        //store image
+        $image->storeAs($userPath, $fileNameToStore);
+        $user->update(['avatar' => $fileNameToStore]);
     }
 }
