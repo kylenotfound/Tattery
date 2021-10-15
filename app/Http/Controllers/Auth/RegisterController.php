@@ -76,9 +76,10 @@ class RegisterController extends Controller {
         ]);
 
         //create photo dir for each user on registration!
-        File::makeDirectory(public_path().'/users/'.$path, 0777, true);
+        File::makeDirectory(storage_path('app/public/users/'.$path.'/avatars'), 0777, true);
+        File::makeDirectory(storage_path('app/public/users/'.$path.'/uploads'), 0777, true);
         //copy default profile picture into the dir
-        File::copy(public_path('user.png'), public_path('/users/'.$path.'/user.png'));
+        File::copy(public_path('user.png'), storage_path('app/public/users/'.$path.'/avatars/user.png'));
 
         return $user;
     }

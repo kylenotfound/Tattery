@@ -28,21 +28,23 @@
     <div>
       <!-- Form for updating all fields of user profile: name, username and bio (avatar soon) -->
       <span>Update Username</span>
-      <form action="{{route('dash.update_profile', ['id' => $user->getDisplayName()])}}" method="POST">
+      <form enctype="multipart/form-data" action="{{route('dash.update_profile', ['id' => $user->getDisplayName()])}}" method="POST">
         @csrf
-        <span>Change Name</span>
+        <label>Change Name</label>
         <input type="text" name="name" value="{{$user->getName()}}"></input>
-        <span>Change Username</span>
+        <label>Change Username</label>
         <input type="text" name="new_display_name" value="{{$user->getDisplayName()}}"></input>
-        <span>Change Bio</span>
+        <label>Change Bio</label>
         <input type="text" name="bio" value="{{$user->getBio()}}"></input>
-        <span>Change Virgin Status</span>
+        <label>Change Virgin Status</label>
         <select name="virgin_status">
           <option>Select</option>
           <option value="Virgin">Virgin</option>
           <option value="Non virgin">Not a Virgin</option>
           <option vlaue="N/A">N/A</option>
         </select>
+        <label>Change Photo</label>
+        <input type="file" name="avatar"></input>
         <input type="submit"></input>
       </form>
     </div>
@@ -51,7 +53,7 @@
   <!-- User's profile page every user can see -->
   
     <div>
-      <img src="/users/{{$user->getStorageDir()}}/{{$user->getAvatar()}}" width="30" height="30">
+      <img src="{{asset('/storage/users/' . $user->getStorageDir() . '/avatars/' . $user->getAvatar())}}" width="30" height="30">
       <br>
       <span>{{$user->getName()}}</span>
       <br>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use File;
 use Auth;
 
 class UserProfileController extends Controller {
@@ -13,12 +14,14 @@ class UserProfileController extends Controller {
         if ($user == null) {
             return view('welcome')->withErrors(['user not found' => 'user does not exist']);
         }
+        //dd(File::exists(storage_path() . '/app/public/users/' . $user->getStorageDir() . '/' . $user->getAvatar()));
         return view('dash', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
     public function updateProfile(Request $request) {
+        //dd($request->all());
         $user = Auth::user();
 
         $validated = $request->validate([
@@ -26,6 +29,18 @@ class UserProfileController extends Controller {
             'new_display_name' => 'min:3|max:16',
             'bio' => 'max:256'
         ]);
+
+        if ($request->hasFile('avatar')) {
+            //Get the user's upload path
+            $userPath = '/public/users/' . $user->getStorageDir() . '/avatars/';
+            $oldAvatar = $userPath . '/' . $user->getAvatar();
+            $newAvatar = $request->file('avatar')->getClientOriginalName();
+            $fileName = pathinfo($newAvatar, PATHINFO_FILENAME);
+            $extension = $request->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            $request->file('avatar')->storeAs($userPath, $fileNameToStore);
+            $user->updateAvatar($fileNameToStore);
+        }
 
         $newName = $request->input('name') ?? $user->getName();
         $newBio = $request->input('bio') ?? $user->getBio();
