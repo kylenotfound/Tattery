@@ -28,6 +28,7 @@ class UserProfileController extends Controller {
             'name' => 'min:2|max:36',
             'new_display_name' => 'min:3|max:16',
             'bio' => 'max:256',
+            'pronouns' => 'max:15',
             'avatar' => 'image|nullable'
         ]);
 
@@ -41,10 +42,13 @@ class UserProfileController extends Controller {
         $newBio = $request->input('bio') ?? $user->getBio();
         $newUserName = $request->input('new_display_name') ?? $user->getDisplayName();
         $newVirginStatus = $request->input('virgin_status') ?? $user->getVirginStatus();
+        $newPronouns = $request->input('pronouns') ?? $user->getPronouns();
 
-        $user->update(['name' => $newName, 
+        $user->update([
+            'name' => $newName, 
             'bio' => $newBio, 
-            'virgin_status' => $newVirginStatus
+            'virgin_status' => $newVirginStatus,
+            'pronouns' => $newPronouns
         ]);
         
         if($user->changeDisplayName($newUserName)) {

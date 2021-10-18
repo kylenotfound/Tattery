@@ -37,8 +37,14 @@
         <br>
         <label>Change Username</label>
         <input type="text" name="new_display_name" value="{{$user->getDisplayName()}}"></input>
+<<<<<<< HEAD
         <br>
         <label>Change Bio</label>
+=======
+        <span>Change Pronouns</span>
+        <input type="text" name="pronouns" value="{{$user->getPronouns()}}"></input>
+        <span>Change Bio</span>
+>>>>>>> a7b825c6deea6bbd9908842c9cab6b2dfcc891e6
         <input type="text" name="bio" value="{{$user->getBio()}}"></input>
         <br>
         <label>Change Virgin Status</label>
@@ -61,6 +67,8 @@
       <span>{{$user->getName()}}</span>
       <br>
       <span>About {{$user->getDisplayName()}}</span>
+      <br>
+      <span>Pronouns: {{$user->getPronouns()}}</span>
       <br>
       <span>{{$user->getBio()}}</span>
       <br>
