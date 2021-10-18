@@ -73,11 +73,6 @@ class User extends Authenticatable {
     /**
      * Mutator functions
      */
-    public function updateName($newName) {
-        $this->name = $newName;
-        $this->save();
-    }
-
     public function changeDisplayName($newDisplayName) {
         //If the display name we are updating doesn't belong to another user 
         if(User::where('display_name', '=', $newDisplayName)->exists() && !$this) {
@@ -89,20 +84,4 @@ class User extends Authenticatable {
             return true;
         }
     }
-
-    public function updateBio($newBio) {
-        $this->bio = $newBio;
-        $this->save();
-    }
-
-    public function updateVirginStatus($newStatus) {
-        $this->virgin_status = $newStatus;
-        $this->save();
-    }
-
-    public function updateAvatar($newAvatar) {
-        $this->avatar = $newAvatar;
-        $this->save();
-    }
-
 }
