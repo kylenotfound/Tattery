@@ -17,7 +17,7 @@ class User extends Authenticatable {
      * @var string[]
      */
     protected $fillable = [
-        'external_id', 'name', 'display_name', 'email', 'password', 'avatar', 'bio', 'virgin_status', 'unique_storage_dir'
+        'external_id', 'name', 'display_name', 'email', 'password', 'avatar', 'pronouns', 'bio', 'virgin_status', 'unique_storage_dir'
     ];
 
     /**
@@ -70,6 +70,10 @@ class User extends Authenticatable {
         return $this->virgin_status;
     }
 
+    public function getPronouns() {
+        return $this->pronouns;
+    }
+
     /**
      * Mutator functions
      */
@@ -80,7 +84,7 @@ class User extends Authenticatable {
 
     public function changeDisplayName($newDisplayName) {
         //If the display name we are updating doesn't belong to another user 
-        if(User::where('display_name', '=', $newDisplayName)->exists() || !$this) {
+        if(User::where('display_name', '=', $newDisplayName)->exists() && !$this) {
             return false;
         } else {
             $this->display_name = $newDisplayName;
