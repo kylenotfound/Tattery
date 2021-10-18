@@ -32,7 +32,7 @@ class UserProfileController extends Controller {
         $newBio = $request->input('bio') ?? $user->getBio();
         $newUserName = $request->input('new_display_name') ?? $user->getDisplayName();
         $newVirginStatus = $request->input('virgin_status') ?? $user->getVirginStatus();
-        $newPronouns = $request->input('pronouns') ?? $user->getPronounds();
+        $newPronouns = $request->input('pronouns') ?? $user->getPronouns();
 
         $user->update([
             'name' => $newName, 
