@@ -17,7 +17,7 @@ class User extends Authenticatable {
      * @var string[]
      */
     protected $fillable = [
-        'external_id', 'name', 'display_name', 'email', 'password', 'avatar', 'pronouns', 'bio', 'virgin_status', 'unique_storage_dir'
+        'external_id', 'name', 'display_name', 'email', 'password', 'avatar', 'pronouns', 'bio', 'virgin_status', 'unique_storage_dir', 'age'
     ];
 
     /**
@@ -72,6 +72,10 @@ class User extends Authenticatable {
 
     public function getPronouns() {
         return $this->pronouns;
+    }
+    
+    public function getAge() {
+        return $this->age;
     }
 
     /**

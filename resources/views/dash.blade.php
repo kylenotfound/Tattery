@@ -42,6 +42,9 @@
         <span>Change Bio</span>
         <input type="text" name="bio" value="{{$user->getBio()}}"></input>
         <br>
+        <span>Change Age</span>
+        <input type="text" name="age" value="{{$user->getAge()}}"></input>
+        <br>
         <label>Change Virgin Status</label>
         <select name="virgin_status">
           <option value="Virgin">Virgin</option>
@@ -66,6 +69,8 @@
       <span>Pronouns: {{$user->getPronouns()}}</span>
       <br>
       <span>{{$user->getBio()}}</span>
+      <br>
+      <span>{{$user->getAge()}}</span>
       <br>
       <span>Virgin Status: {{$user->getVirginStatus()}}</span>
     </div>
