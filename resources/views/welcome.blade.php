@@ -31,7 +31,7 @@
                     </ul>
                 </div>
             @endif
-            <p>Home Page</p>
+            <p>welcome Page</p>
         </body>
     </html>
 @endsection
