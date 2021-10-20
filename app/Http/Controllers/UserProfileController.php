@@ -24,12 +24,13 @@ class UserProfileController extends Controller {
     public function updateProfile(Request $request) {
         $user = Auth::user();
 
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'min:2|max:36',
             'new_display_name' => 'min:3|max:16',
             'bio' => 'max:256',
             'pronouns' => 'max:15',
-            'avatar' => 'image|nullable'
+            'avatar' => 'image|nullable',
+            'age' => 'nullable'
         ]);
 
         //If a new avatar image is passed, change the profile photo
@@ -43,12 +44,14 @@ class UserProfileController extends Controller {
         $newUserName = $request->input('new_display_name') ?? $user->getDisplayName();
         $newVirginStatus = $request->input('virgin_status') ?? $user->getVirginStatus();
         $newPronouns = $request->input('pronouns') ?? $user->getPronouns();
+        $newAge = $request->input('age') ?? $user->getAge();
 
         $user->update([
             'name' => $newName, 
             'bio' => $newBio, 
             'virgin_status' => $newVirginStatus,
-            'pronouns' => $newPronouns
+            'pronouns' => $newPronouns,
+            'age' => $newAge
         ]);
         
         if($user->changeDisplayName($newUserName)) {
