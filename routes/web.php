@@ -20,9 +20,17 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/explore', [App\Http\Controllers\ExploreController::class, 'index'])->name('explore');
 
 /**
  * User Profile
  */
 Route::get('/dash/{id}', [App\Http\Controllers\UserProfileController::class, 'index'])->name('dash');
 Route::post('/dash/update_profile/{id}', [App\Http\Controllers\UserProfileController::class, 'updateProfile'])->name('dash.update_profile');
+
+
+/**
+ * Search
+ */
+
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'returnUserSearch'])->name('search');

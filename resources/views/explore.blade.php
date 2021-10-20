@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <p>home page</p>
+                <p>explore page</p>
             </div>
         </div>
     </div>
