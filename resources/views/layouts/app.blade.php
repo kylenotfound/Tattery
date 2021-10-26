@@ -11,6 +11,7 @@
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 
         <!-- Fonts -->
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -25,17 +26,24 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 {{ config('app.name', 'TattooGallery') }}
-            </a>  
+            </a> 
+            <a href="{{ route('explore') }}">
+                Explore
+            </a> 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-            <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
-
+            @auth
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{route('tattoo.upload')}}">Upload</a>
+                    </li>
+                </ul>
+            @endauth
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <a href="{{route('explore')}}">
-                        Explore
-                    </a>  
+ 
                 </ul>
 
             <!-- Right Side Of Navbar -->
