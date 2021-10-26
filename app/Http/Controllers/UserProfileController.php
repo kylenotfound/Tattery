@@ -13,7 +13,7 @@ class UserProfileController extends Controller {
     
     public function index($id) {
         $user = User::where('display_name', '=', $id)->first();
-        $tattoos = Tattoo::where('user_id', '=', $user->getId())->paginate(10);
+        $tattoos = Tattoo::where('user_id', '=', $user->getId())->orderBy('created_at', 'desc')->paginate(10);
         if ($user == null) {
             return view('home')->withErrors(['user not found' => 'user does not exist']);
         }

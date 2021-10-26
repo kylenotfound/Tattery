@@ -86,6 +86,7 @@
             <p>{{ $tattoo->getDescription() }}</p>
           </div>
         @endforeach
+        {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
     </div>
   </div>
 

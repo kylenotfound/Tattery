@@ -1,7 +1,10 @@
 @extends('layouts.app')
+
+@section('scripts')
+  <script src="{{ asset('js/tattoo/upload.js') }}"></script>
+@endsection
   
 @section('content')
-
   <div class="container mt-4">
     <form method="POST" enctype="multipart/form-data" id="upload-image" action="{{ route('tattoo.upload-store') }}">
       @csrf    
@@ -30,27 +33,5 @@
       </div>     
     </form>
   </div>  
-
-  <script>
-    $(document).ready(function (e) {
-      $('#image').change(function(){     
-        let reader = new FileReader();
-        reader.onload = (e) => { 
-          $('#preview-image-before-upload').attr('src', e.target.result); 
-        }
-        reader.readAsDataURL(this.files[0]); 
-      });
-    });
-
-    function lengthCheck(element) {
-      var max = 150;
-      var textArea = element.value.length;
-      var charactersLeft = max - textArea;
-      var count = document.getElementById('chars');
-      count.innerHTML = "Characters left: " + charactersLeft;
-    }
-    lengthCheck(document.getElementById('newTwet'));
-
-  </script>
 
 @endsection
