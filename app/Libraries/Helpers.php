@@ -15,4 +15,8 @@ class Helpers {
     return asset('/storage/tattoos/' . $tattoo->getTattooImageName());
   }
 
+  public static function getUsersTattoos(Tattoo $tattoo, User $user) {
+    return asset('/storage/users/' . $user->getStorageDir() . '/uploads/' . $tattoo->getTattooImageName());
+  }
+
 }

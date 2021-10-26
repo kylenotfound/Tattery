@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Libraries\Helpers;
 use App\Models\User;
+use App\Models\Tattoo;
 use File;
 use Auth;
 
@@ -12,12 +13,14 @@ class UserProfileController extends Controller {
     
     public function index($id) {
         $user = User::where('display_name', '=', $id)->first();
+        $tattoos = Tattoo::where('user_id', '=', $user->getId())->paginate(10);
         if ($user == null) {
             return view('home')->withErrors(['user not found' => 'user does not exist']);
         }
         return view('dash', [
             'user' => $user,
-            'avatar' => Helpers::getUserAvatar($user)
+            'avatar' => Helpers::getUserAvatar($user),
+            'tattoos' => $tattoos
         ]);
     }
 
@@ -27,10 +30,10 @@ class UserProfileController extends Controller {
         $request->validate([
             'name' => 'min:2|max:36',
             'new_display_name' => 'min:3|max:16',
-            'bio' => 'max:256',
-            'pronouns' => 'max:15',
+            'bio' => 'max:256|nullable',
+            'pronouns' => 'max:15|nullable',
             'avatar' => 'image|nullable',
-            'age' => 'nullable'
+            'age' => 'integer|nullable'
         ]);
 
         //If a new avatar image is passed, change the profile photo

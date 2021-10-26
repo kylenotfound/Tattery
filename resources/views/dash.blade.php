@@ -74,5 +74,19 @@
       <br>
       <span>Virgin Status: {{$user->getVirginStatus()}}</span>
     </div>
+  <!-- This user's posts -->
+  <div>
+    <div>
+        @if(count($tattoos) == 0)
+          <span>No posts to display.</span>
+        @endif
+        @foreach($tattoos as $tattoo)
+          <div class="card mb-2">
+          <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+            <p>{{ $tattoo->getDescription() }}</p>
+          </div>
+        @endforeach
+    </div>
+  </div>
 
 @endsection
