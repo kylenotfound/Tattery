@@ -13,6 +13,10 @@ class Tattoo extends Model {
         'user_id', 'tattoo_image_name',
     ];
 
+    public function getId() {
+        return $this->id;
+    }
+
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
     }

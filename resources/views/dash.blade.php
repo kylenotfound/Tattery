@@ -82,9 +82,20 @@
         @endif
         @foreach($tattoos as $tattoo)
           <div class="card mb-2">
-          <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+            <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
             <p>{{ $tattoo->getDescription() }}</p>
           </div>
+          <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
+            @csrf
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                . . .
+              </button>
+              <div class="dropdown-menu">
+                <button type="submit" class="dropdown-item" onClick="return confirm('Are you sure you want to delete your tattoo?')">Delete Post</button>                
+              </div>
+            </div>
+          </form>
         @endforeach
         {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
     </div>

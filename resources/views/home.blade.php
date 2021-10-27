@@ -27,7 +27,7 @@
                     <span>No posts to display.</span>
                 @endif
                 @foreach($tattoos as $tattoo)
-                    <div class="card mb-2">
+                    <div class="card border-dark mb-2">
                         <img src="{{Helpers::getUserAvatar($tattoo->user)}}" width="30px" height="30px"></img>
                         <a href="{{route('dash', ['id' => $tattoo->user->getDisplayName()])}}">{{$tattoo->user->getDisplayName()}}</a>
                         <img src="{{Helpers::getPublicImageLocationOfTattoo($tattoo)}}" width="250px" height="250px" />

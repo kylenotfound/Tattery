@@ -37,6 +37,43 @@ class TattooController extends Controller {
 
     }
 
+    public function delete($id) {
+        $user = Auth::user();
+        $tattoo = Tattoo::find($id);
+
+        if ($tattoo == null) {
+            return back()->withErrors(['error' => 'could not delete tattoo']);
+        }
+
+        //Check the public tattoos storage dir exists
+        if (File::exists('./storage/tattoos')) {
+            //get all the uploads in the storage dir
+            $uploads = File::files('./storage/tattoos');
+            //foreach upload in the storage dir
+            foreach ($uploads as $upload) {
+                //foreach tattoo row associated with the user at hand, 
+                if (basename($upload) == $tattoo->getTattooImageName()) {
+                    File::delete($upload);
+                }
+            }
+        }
+
+        if (File::exists('./storage/users/' . $user->getStorageDir() . '/uploads/')) {
+            $uploads = File::files('./storage/users/' . $user->getStorageDir() . '/uploads/');
+            //loop through each upload and remove it from the uploads dir
+            foreach($uploads as $upload) {
+                if (basename($upload) == $tattoo->getTattooImageName()) {
+                    File::delete($upload);
+                }
+            }
+        }
+
+        $tattoo->delete();
+
+        return back()->with(['success' => 'tattoo succesfully deleted!']);
+
+    }
+
     private static function uploadAndSaveTattooPost($user, $tattoo) {
         //path were storing the image
         $userPath = '/public/users/' . $user->getStorageDir() . '/uploads/';

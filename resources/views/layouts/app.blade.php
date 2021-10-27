@@ -1,22 +1,5 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<<<<<<< HEAD
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'TattooGallery') }}</title>
-    <!-- Scripts -->
-     <script src="{{ asset('js/app.js') }}" defer></script>
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-  </head>
-  <body>
-=======
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,23 +21,9 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
->>>>>>> 31d250bc6666a50873fcfca53e088c776b02bca5
     <div id="app">
       <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-<<<<<<< HEAD
-          <a class="navbar-brand" href="{{ route('home') }}">
-            {{ config('app.name', 'TattooGallery') }}
-          </a>  
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
-              <a href="{{route('explore')}}">Explore</a>  
-            </ul>
-=======
             <a class="navbar-brand" href="{{ route('home') }}">
                 {{ config('app.name', 'TattooGallery') }}
             </a> 
@@ -76,7 +45,6 @@
                 <ul class="navbar-nav mr-auto">
  
                 </ul>
->>>>>>> 31d250bc6666a50873fcfca53e088c776b02bca5
 
             <!-- Right Side Of Navbar -->
               <ul class="navbar-nav ml-auto">
@@ -122,12 +90,6 @@
               </ul>
             </div>
         </div>
-<<<<<<< HEAD
-      </nav>
-      <main class="py-4">
-        @yield('content')
-      </main>
-=======
         </nav>
 
         <main class="py-4">
@@ -135,7 +97,6 @@
             @yield('scripts')
             @yield('styles')
         </main>
->>>>>>> 31d250bc6666a50873fcfca53e088c776b02bca5
     </div>
   </body>
 </html>
