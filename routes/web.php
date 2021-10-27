@@ -27,7 +27,12 @@ Route::get('/explore', [App\Http\Controllers\ExploreController::class, 'index'])
  */
 Route::get('/dash/{id}', [App\Http\Controllers\UserProfileController::class, 'index'])->name('dash');
 Route::post('/dash/update_profile/{id}', [App\Http\Controllers\UserProfileController::class, 'updateProfile'])->name('dash.update_profile');
+Route::post('/dash/{id}/delete', [App\Http\Controllers\UserProfileController::class, 'deleteUser'])->name('user.delete');
 
+/**
+ * User Settings
+ */
+Route::get('/{id}/settings', [App\Http\Controllers\UserAccountSettingsController::class, 'index'])->name('user.settings');
 
 /**
  * Search

@@ -60,6 +60,7 @@
                       </a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{route('dash', ['id' => Auth::user()->getDisplayName()])}}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>Profile</a>
+                        <a class="dropdown-item" href="{{route('user.settings', ['id' => Auth::user()->getDisplayName()])}}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>Settings</a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                           document.getElementById('logout-form').submit();">
                           {{ __('Logout') }}

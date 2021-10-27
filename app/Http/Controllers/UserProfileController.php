@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Libraries\Helpers;
+use App\Models\Tattoo;
 use App\Models\User;
 use File;
 use Auth;
@@ -58,6 +59,20 @@ class UserProfileController extends Controller {
             return back()->withErrors(['username taken' => 'this username is not available!']);
         }
 
+    }
+
+    public function deleteUser(Request $request) {
+        $user = Auth::user();
+        $tattoos = Tattoo::where('user_id', '=', $user->getId())->get();
+
+        if(File::exists('/public/users/' . $user->getStorageDir())) {
+            dd("yo");
+        }
+
+        //remove tattoo rows
+        foreach($tattoos as $tattoo) {
+            //$tattoo->delete();
+        }
     }
 
     private static function changeProfilePhoto($user, $image) {
