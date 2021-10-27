@@ -34,3 +34,10 @@ Route::post('/dash/update_profile/{id}', [App\Http\Controllers\UserProfileContro
  */
 
 Route::get('/search', [App\Http\Controllers\SearchController::class, 'returnUserSearch'])->name('search');
+
+
+/**
+ * Tattoos
+ */
+Route::get('/tattoo/upload', [App\Http\Controllers\TattooController::class, 'index'])->name('tattoo.upload');
+Route::post('/tattoo/upload/store', [App\Http\Controllers\TattooController::class, 'store'])->name('tattoo.upload-store');
