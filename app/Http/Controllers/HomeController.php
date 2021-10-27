@@ -11,7 +11,7 @@ class HomeController extends Controller {
     
     public function index() {
 
-        //TODO follower scoped tattos returned for home page
+        //TODO follower scoped tattoos returned for home page
         $user = Auth::user();
         $tattoos = Tattoo::orderBy('created_at', 'desc')->paginate(10);
 
