@@ -57,6 +57,21 @@
       <button type="button" data-section="section2" class="btn btn-primary segmentedButton">Edit Profile</button>
       @endif
     </div>
+  <!-- This user's posts -->
+  <div>
+    <div>
+        @if(count($tattoos) == 0)
+          <span>No posts to display.</span>
+        @endif
+        @foreach($tattoos as $tattoo)
+          <div class="card mb-2">
+          <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+            <p>{{ $tattoo->getDescription() }}</p>
+          </div>
+        @endforeach
+        {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
+    </div>
+  </div>
 
     <div class="content-section" id="section1">
       <p>Posts will eventually go here</p>
