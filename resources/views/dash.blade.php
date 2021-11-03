@@ -27,6 +27,10 @@
     .content-section {
       display: none;
     }
+
+    .boldText {
+    font-weight:bold;
+    } 
   </style>
 
   <!-- User's profile page every user can see -->
@@ -51,30 +55,30 @@
   <br>
 
   <div class="container">
-    <div class="btn-group btn-group-sm d-flex flex-row justify-content-evenly">
-      <button type="button" data-section="section1" class="btn btn-primary segmentedButton ">Posts</button>
+    <div class="btn-group btn-group-sm d-flex flex-row justify-content-evenly pb-3">
+      <button id="posts" type="button" data-section="section1" class="btn btn-dark segmentedButton">Posts</button>
+
       @if(Auth::user()->id == $user->id)
-      <button type="button" data-section="section2" class="btn btn-primary segmentedButton">Edit Profile</button>
+      <button type="button" data-section="section2" class="btn btn-dark segmentedButton">Edit Profile</button>
       @endif
     </div>
-  <!-- This user's posts -->
-  <div>
-    <div>
-        @if(count($tattoos) == 0)
-          <span>No posts to display.</span>
-        @endif
-        @foreach($tattoos as $tattoo)
-          <div class="card mb-2">
-          <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
-            <p>{{ $tattoo->getDescription() }}</p>
-          </div>
-        @endforeach
-        {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
-    </div>
-  </div>
 
     <div class="content-section" id="section1">
-      <p>Posts will eventually go here</p>
+      <!-- This user's posts -->
+      <div>
+        <div>
+            @if(count($tattoos) == 0)
+              <span>No posts to display.</span>
+            @endif
+            @foreach($tattoos as $tattoo)
+              <div class="card mb-2">
+              <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+                <p>{{ $tattoo->getDescription() }}</p>
+              </div>
+            @endforeach
+            {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
+        </div>
+      </div>
     </div>
 
     <div class="content-section" id="section2">
@@ -82,25 +86,32 @@
 
       @if(Auth::user()->id == $user->id)
         <div>
-          <span>Update Username</span>
           <form enctype="multipart/form-data" action="{{route('dash.update_profile', ['id' => $user->getDisplayName()])}}" method="POST">
             @csrf
             <label>Change Photo</label>
             <input type="file" name="avatar"></input>
             <br>
+
             <label>Change Name</label>
             <input type="text" name="name" value="{{$user->getName()}}"></input>
             <br>
+
             <label>Change Username</label>
             <input type="text" name="new_display_name" value="{{$user->getDisplayName()}}"></input>
+            <br>
+
             <span>Change Pronouns</span>
             <input type="text" name="pronouns" value="{{$user->getPronouns()}}"></input>
+            <br>
+
             <span>Change Bio</span>
             <input type="text" name="bio" value="{{$user->getBio()}}"></input>
             <br>
+
             <span>Change Age</span>
             <input type="text" name="age" value="{{$user->getAge()}}"></input>
             <br>
+
             <label>Change Virgin Status</label>
             <select name="virgin_status">
               <option value="Virgin">Virgin</option>
@@ -108,7 +119,8 @@
               <option vlaue="N/A">N/A</option>
             </select>
             <br>
-            <input type="submit"></input>
+            
+            <input type="submit" class="btn-dark"></input>
           </form>
         </div>
       @endif
@@ -116,6 +128,7 @@
   </div>
 
   <script type="text/javascript">
+
     $(function() {
 
       $(".btn").on("click", function() {
@@ -128,6 +141,10 @@
       });
 
     });
-  </script>
 
+    //Clicks posts button when page is loaded. 
+    window.onload=function(){
+      document.getElementById("posts").click();
+    };
+  </script>
 @endsection
