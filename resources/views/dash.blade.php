@@ -1,9 +1,11 @@
 
 @extends('layouts.app')
 
-@section('content')
+@section('scripts')
+  <script src="{{ asset('js/tattoo/dash.js') }}"></script>
+@endsection
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+@section('content')
 
     <!-- Display Errors to the user if there are any in a list format-->
     @if($errors->any())
@@ -27,10 +29,6 @@
     .content-section {
       display: none;
     }
-
-    .boldText {
-    font-weight:bold;
-    } 
   </style>
 
   <!-- User's profile page every user can see -->
@@ -100,15 +98,15 @@
             <input type="text" name="new_display_name" value="{{$user->getDisplayName()}}"></input>
             <br>
 
-            <span>Change Pronouns</span>
+            <label>Change Pronouns</label>
             <input type="text" name="pronouns" value="{{$user->getPronouns()}}"></input>
             <br>
 
-            <span>Change Bio</span>
+            <label>Change Bio</label>
             <input type="text" name="bio" value="{{$user->getBio()}}"></input>
             <br>
 
-            <span>Change Age</span>
+            <label>Change Age</label>
             <input type="text" name="age" value="{{$user->getAge()}}"></input>
             <br>
 
@@ -126,25 +124,4 @@
       @endif
     </div>
   </div>
-
-  <script type="text/javascript">
-
-    $(function() {
-
-      $(".btn").on("click", function() {
-
-        //hide all sections
-        $(".content-section").hide();
-
-        //show the section depending on which button was clicked
-          $("#" + $(this).attr("data-section")).show();
-      });
-
-    });
-
-    //Clicks posts button when page is loaded. 
-    window.onload=function(){
-      document.getElementById("posts").click();
-    };
-  </script>
 @endsection
