@@ -1,4 +1,9 @@
+
 @extends('layouts.app')
+
+@section('scripts')
+  <script src="{{ asset('js/tattoo/dash.js') }}"></script>
+@endsection
 
 @section('content')
 
@@ -20,74 +25,103 @@
       </div>
     @endif
 
-  <p>{{$user->getDisplayName()}}</p>
-
-  <!--If the user logged in is the same user that owns the profile, display profile customization features -->
-  @if(Auth::user()->id == $user->id)
-    
-    <div>
-      <span>Update Username</span>
-      <form enctype="multipart/form-data" action="{{route('dash.update_profile', ['id' => $user->getDisplayName()])}}" method="POST">
-        @csrf
-        <label>Change Photo</label>
-        <input type="file" name="avatar"></input>
-        <br>
-        <label>Change Name</label>
-        <input type="text" name="name" value="{{$user->getName()}}"></input>
-        <br>
-        <label>Change Username</label>
-        <input type="text" name="new_display_name" value="{{$user->getDisplayName()}}"></input>
-        <span>Change Pronouns</span>
-        <input type="text" name="pronouns" value="{{$user->getPronouns()}}"></input>
-        <span>Change Bio</span>
-        <input type="text" name="bio" value="{{$user->getBio()}}"></input>
-        <br>
-        <span>Change Age</span>
-        <input type="text" name="age" value="{{$user->getAge()}}"></input>
-        <br>
-        <label>Change Virgin Status</label>
-        <select name="virgin_status">
-          <option value="Virgin">Virgin</option>
-          <option value="Non virgin">Not a Virgin</option>
-          <option vlaue="N/A">N/A</option>
-        </select>
-        <br>
-        <input type="submit"></input>
-      </form>
-    </div>
-  @endif
+  <style type="text/css">
+    .content-section {
+      display: none;
+    }
+  </style>
 
   <!-- User's profile page every user can see -->
-  
-    <div>
-      <img src="{{ $avatar }}" width="130" height="130">
-      <br>
-      <span>{{$user->getName()}}</span>
-      <br>
-      <span>About {{$user->getDisplayName()}}</span>
-      <br>
-      <span>Pronouns: {{$user->getPronouns()}}</span>
-      <br>
-      <span>{{$user->getBio()}}</span>
-      <br>
-      <span>{{$user->getAge()}}</span>
-      <br>
-      <span>Virgin Status: {{$user->getVirginStatus()}}</span>
-    </div>
-  <!-- This user's posts -->
-  <div>
-    <div>
-        @if(count($tattoos) == 0)
-          <span>No posts to display.</span>
-        @endif
-        @foreach($tattoos as $tattoo)
-          <div class="card mb-2">
-          <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
-            <p>{{ $tattoo->getDescription() }}</p>
-          </div>
-        @endforeach
-        {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
+  <div class="container">
+    <div class="row d-flex align-items-center">
+      <div class="col col-sm-6 d-flex justify-content-center">
+        <img src="{{ $avatar }}" class="rounded-circle mb-4 mb-sm-0" width="200" height="200">
+      </div>
+
+      <div class="col col-sm-6  text-left">
+        <p class="h5 my-0">{{$user->getDisplayName()}}</p>
+        <br>
+        <span><b>{{$user->getName()}}</b>
+          <span style="font-size: 16px;" class="ml-1"><i>Age: {{$user->getAge()}} </i>| <i>Pronouns: {{$user->getPronouns()}} </i>| <i>Virgin Status: {{$user->getVirginStatus()}}</i></span>
+        </span>
+        <br>
+        <span>{{$user->getBio()}}</span>
+      </div>
     </div>
   </div>
 
+  <br>
+
+  <div class="container">
+    <div class="btn-group btn-group-sm d-flex flex-row justify-content-evenly pb-3">
+      <button id="posts" type="button" data-section="section1" class="btn btn-dark segmentedButton">Posts</button>
+
+      @if(Auth::user()->id == $user->id)
+      <button type="button" data-section="section2" class="btn btn-dark segmentedButton">Edit Profile</button>
+      @endif
+    </div>
+
+    <div class="content-section" id="section1">
+      <!-- This user's posts -->
+      <div>
+        <div>
+            @if(count($tattoos) == 0)
+              <span>No posts to display.</span>
+            @endif
+            @foreach($tattoos as $tattoo)
+              <div class="card mb-2">
+              <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+                <p>{{ $tattoo->getDescription() }}</p>
+              </div>
+            @endforeach
+            {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section" id="section2">
+      <!--If the user logged in is the same user that owns the profile, display profile customization features -->
+
+      @if(Auth::user()->id == $user->id)
+        <div>
+          <form enctype="multipart/form-data" action="{{route('dash.update_profile', ['id' => $user->getDisplayName()])}}" method="POST">
+            @csrf
+            <label>Change Photo</label>
+            <input type="file" name="avatar"></input>
+            <br>
+
+            <label>Change Name</label>
+            <input type="text" name="name" value="{{$user->getName()}}"></input>
+            <br>
+
+            <label>Change Username</label>
+            <input type="text" name="new_display_name" value="{{$user->getDisplayName()}}"></input>
+            <br>
+
+            <label>Change Pronouns</label>
+            <input type="text" name="pronouns" value="{{$user->getPronouns()}}"></input>
+            <br>
+
+            <label>Change Bio</label>
+            <input type="text" name="bio" value="{{$user->getBio()}}"></input>
+            <br>
+
+            <label>Change Age</label>
+            <input type="text" name="age" value="{{$user->getAge()}}"></input>
+            <br>
+
+            <label>Change Virgin Status</label>
+            <select name="virgin_status">
+              <option value="Virgin">Virgin</option>
+              <option value="Non virgin">Not a Virgin</option>
+              <option vlaue="N/A">N/A</option>
+            </select>
+            <br>
+            
+            <input type="submit" class="btn-dark"></input>
+          </form>
+        </div>
+      @endif
+    </div>
+  </div>
 @endsection
