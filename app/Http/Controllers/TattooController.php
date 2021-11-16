@@ -18,7 +18,7 @@ class TattooController extends Controller {
         $user = Auth::user();
 
         $request->validate([
-            'tattoo' => 'required',
+            'tattoo' => 'required|mimes:jpg,jpeg,png|max:10000',
             'description' => 'nullable|max:150'
         ]);
 
