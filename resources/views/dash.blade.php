@@ -60,32 +60,6 @@
       <button type="button" data-section="section2" class="btn btn-dark segmentedButton">Edit Profile</button>
       @endif
     </div>
-<<<<<<< HEAD
-  <!-- This user's posts -->
-  <div>
-    <div>
-        @if(count($tattoos) == 0)
-          <span>No posts to display.</span>
-        @endif
-        @foreach($tattoos as $tattoo)
-          <div class="card mb-2">
-            <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
-            <p>{{ $tattoo->getDescription() }}</p>
-          </div>
-          <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
-            @csrf
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                . . .
-              </button>
-              <div class="dropdown-menu">
-                <button type="submit" class="dropdown-item" onClick="return confirm('Are you sure you want to delete your tattoo?')">Delete Post</button>                
-              </div>
-            </div>
-          </form>
-        @endforeach
-        {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
-=======
 
     <div class="content-section" id="section1">
       <!-- This user's posts -->
@@ -103,7 +77,6 @@
             {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
         </div>
       </div>
->>>>>>> dd1e763344091126cd6aecb11363be5424612f6d
     </div>
 
     <div class="content-section" id="section2">
