@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Libraries\Helpers;
-use App\Models\User;
 use App\Models\Tattoo;
+use App\Models\User;
 use File;
 use Auth;
 
-class UserProfileController extends Controller {
+class UserController extends Controller {
     
     public function index($id) {
         $user = User::where('display_name', '=', $id)->first();
@@ -66,6 +66,25 @@ class UserProfileController extends Controller {
 
     }
 
+    public function deleteUser(Request $request) {
+        $user = Auth::user();
+        $tattoos = Tattoo::where('user_id', '=', $user->getId())->get();
+
+        self::deleteUserContent($user, $tattoos);
+
+        //remove every tattoo row in the db that a user has
+        foreach($tattoos as $tattoo) {
+            $tattoo->delete();
+        }
+
+        //logout the user and delete them!
+        Auth::logout();
+        $user->delete();
+
+        return redirect('/')->with(['success' => 'Your profile has been erased, never to be seen again!']);
+
+    }
+
     private static function changeProfilePhoto($user, $image) {
         //I hate this but whatever
         //path were storing the image
@@ -85,5 +104,48 @@ class UserProfileController extends Controller {
         //store image
         $image->storeAs($userPath, $fileNameToStore);
         $user->update(['avatar' => $fileNameToStore]);
+    }
+
+    private static function deleteUserContent($user, $tattoos) {
+
+        //Check the public tattoos storage dir exists
+        if (File::exists('./storage/tattoos')) {
+            //get all the uploads in the storage dir
+            $uploads = File::files('./storage/tattoos');
+            //foreach upload in the storage dir
+            foreach ($uploads as $upload) {
+                //foreach tattoo row associated with the user at hand, 
+                foreach($tattoos as $tattoo) {
+                    //if the names of the photo in the db match the photo name in the tattoos folder, remove it
+                    if (basename($upload) == $tattoo->getTattooImageName()) {
+                        File::delete($upload);
+                    }
+                }
+            }
+        }
+        //check the user's dir exists
+        if (File::exists('./storage/users/' . $user->getStorageDir())) {
+            //remove avatar from storage and then delete avatar dir
+            if (File::exists('./storage/users/' . $user->getStorageDir() . '/avatars/')) {
+                $avatar = './storage/users/' . $user->getStorageDir() . '/avatars/' . $user->getAvatar();
+                //dd($avatar);
+                //there will only ever be one avatar in the avatars folder because the old avatar is removed when the profile is updated
+                if(File::exists($avatar)) {
+                    File::delete($avatar);
+                }
+                rmdir('./storage/users/' . $user->getStorageDir() . '/avatars/');
+            }
+            
+            if (File::exists('./storage/users/' . $user->getStorageDir() . '/uploads/')) {
+                $uploads = File::files('./storage/users/' . $user->getStorageDir() . '/uploads/');
+                //loop through each upload and remove it from the uploads dir
+                foreach($uploads as $upload) {
+                    File::delete($upload);
+                }
+                rmdir('./storage/users/' . $user->getStorageDir() . '/uploads/');
+            }
+
+            rmdir('./storage/users/' . $user->getStorageDir());
+        }
     }
 }
