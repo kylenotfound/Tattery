@@ -10,7 +10,7 @@ class Tattoo extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'tattoo_image_name',
+        'user_id', 'tattoo_image_name', 'description', 'location'
     ];
 
     public function getId() {
@@ -27,6 +27,10 @@ class Tattoo extends Model {
 
     public function getDescription() {
         return $this->description;
+    }
+
+    public function getLocation() {
+        return $this->location;
     }
 
 }

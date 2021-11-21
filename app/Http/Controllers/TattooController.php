@@ -19,6 +19,7 @@ class TattooController extends Controller {
 
         $request->validate([
             'tattoo' => 'required|mimes:jpg,jpeg,png|max:10000',
+            'location' => 'nullable|max:50',
             'description' => 'nullable|max:150'
         ]);
 
@@ -30,6 +31,7 @@ class TattooController extends Controller {
         $tattoo = new Tattoo;
         $tattoo->user_id = $user->id;
         $tattoo->tattoo_image_name = $tattooNameToStore;
+        $tattoo->location = $request->input('location');
         $tattoo->description = $request->input('description');
         $tattoo->save();
 

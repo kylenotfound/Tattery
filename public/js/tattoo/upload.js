@@ -9,12 +9,19 @@ $(document).ready(function (e) {
   });
 });
 
-function lengthCheck(element) {
+function lengthCheckDescription(element) {
   var max = 150;
   var textArea = element.value.length;
   var charactersLeft = max - textArea;
-  var count = document.getElementById('chars');
+  var count = document.getElementById('desc');
   count.innerHTML = "Characters left: " + charactersLeft;
 }
 
-lengthCheck(document.getElementById('newTwet'));
+function lengthCheckLocation(element) {
+  var max = 50;
+  var input = element.value.length;
+  var charactersLeft = max - input;
+  var count = document.getElementById('loc');
+  count.innerHTML = "Characters left: " + charactersLeft;
+}
+
