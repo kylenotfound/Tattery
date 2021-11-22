@@ -51,13 +51,15 @@ Mine personally are 'root' and 'passoword' but these can be whatever you set up 
 If on windows, you may need to run 
 >composer install --ignore-platform-reqs
 
+Then run:
+
 >npm install
 
 >npm run dev
 
 >php artisan migrate
 
-If you run this and it fails, or if you have just installed php for the first time, you may need to locate the source of where you installed php and edit your php.ini file and uncomment the following extensions. (remove the semicolons before each line)
+If you run "php artisan migrate" and it fails, or if you have just installed php for the first time, you may need to locate the source of where you installed php and edit your php.ini file and uncomment the following extensions. (remove the semicolons before each line)
 * extension=php_mysql
 * extension=php_mysqli
 * extension=php_pdo_mysql
@@ -75,7 +77,7 @@ If you had a terminal session open, be sure to restart it and then run:
 
 All the migrations should have run now succesfully.
 
-## Next run the following to generate an app key and set up the local file storage system
+### Next run the following to generate an app key and set up the local file storage system
 
 >php artisan key:generate
 
