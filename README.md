@@ -2,7 +2,7 @@
 This repo is a web-app made with friends where they can display a portfolio of photos of the tattoos they have, while also learning about front end web development, version control and get a taste for working in php/laravel.
 
 <h2>Setup Instructions to Collaberate</h2>
-I am leaving this repo open for anyone to contribute.
+Feel free to fork/clone the repo and add something or fix something
 
 ## Prerequistes
 Have the following installed:
@@ -48,16 +48,18 @@ Mine personally are 'root' and 'passoword' but these can be whatever you set up 
 ### Now that your database is setup, run the following commands:
 >composer install
 
+If on windows, you may need to run 
+>composer install --ignore-platform-reqs
+
+Then run:
+
 >npm install
 
 >npm run dev
 
-If on windows, you may need to run 
->composer install --ignore-platform-reqs
-
 >php artisan migrate
 
-If you run this and it fails, or if you have just installed php for the first time, you may need to locate the source of where you installed php and edit your php.ini file and uncomment the following extensions. (remove the semicolons before each line)
+If you run "php artisan migrate" and it fails, or if you have just installed php for the first time, you may need to locate the source of where you installed php and edit your php.ini file and uncomment the following extensions. (remove the semicolons before each line)
 * extension=php_mysql
 * extension=php_mysqli
 * extension=php_pdo_mysql
@@ -70,9 +72,16 @@ If you run this and it fails, or if you have just installed php for the first ti
 
 If you had a terminal session open, be sure to restart it and then run:
 >php artisan db:wipe
+
 >php artisan migrate
 
 All the migrations should have run now succesfully.
+
+### Next run the following to generate an app key and set up the local file storage system
+
+>php artisan key:generate
+
+>php artisan storage:link
 
 ## To launch the devlopment server:
 
