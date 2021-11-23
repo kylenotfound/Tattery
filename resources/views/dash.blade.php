@@ -46,6 +46,10 @@
         </span>
         <br>
         <span>{{$user->getBio()}}</span>
+        <br>
+        <span>Followers: {{$user->followers()->count()}}</span>
+        <br>
+        <span>Following: {{$user->following()->count()}}</span>
       </div>
     </div>
   </div>
