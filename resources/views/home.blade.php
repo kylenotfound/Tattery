@@ -30,6 +30,7 @@
                     <div class="card border-dark mb-2">
                         <img src="{{Helpers::getUserAvatar($tattoo->user)}}" width="30px" height="30px"></img>
                         <a href="{{route('dash', ['id' => $tattoo->user->getDisplayName()])}}">{{$tattoo->user->getDisplayName()}}</a>
+                        <p>Tattoo Shop: {{ $tattoo->getLocation() }}</p>
                         <img src="{{Helpers::getPublicImageLocationOfTattoo($tattoo)}}" width="250px" height="250px" />
                         <p>{{ $tattoo->getDescription() }}</p>
                     </div>

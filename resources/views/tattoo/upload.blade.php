@@ -23,9 +23,14 @@
           <img id="preview-image-before-upload">
         </div>
         <div class="col-md-12 mb-2">
+          <label>Location: </label>
+          <input type="text" class="form-control" name="location" placeholder="Enter a location" id="location" maxLength="50" oninput="lengthCheckLocation(this)">
+          <p id="loc"></p>
+        </div>
+        <div class="col-md-12 mb-2">
           <label>Description: </label>
-          <textarea class="form-control" maxLength="500" id="description" name="description" oninput="lengthCheck(this)"></textarea>
-          <p id="chars"></p>
+          <textarea class="form-control" maxLength="150" id="description" name="description" oninput="lengthCheckDescription(this)"></textarea>
+          <p id="desc"></p>
         </div>
         <div class="col-md-12">
           <button type="submit" class="btn btn-primary" id="submit">Submit</button>

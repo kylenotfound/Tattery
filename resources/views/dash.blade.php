@@ -72,6 +72,11 @@
               <div class="card mb-2">
               <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
                 <p>{{ $tattoo->getDescription() }}</p>
+                <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
+                  @csrf
+                  <label>Delete Post</label>
+                  <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>                
+                </form>
               </div>
             @endforeach
             {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
