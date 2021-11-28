@@ -75,7 +75,7 @@
                 <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
                   @csrf
                   <label>Delete Post</label>
-                  <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>                
+                  <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
                 </form>
               </div>
             @endforeach
@@ -122,7 +122,7 @@
               <option vlaue="N/A">N/A</option>
             </select>
             <br>
-            
+
             <input type="submit" class="btn-dark"></input>
           </form>
         </div>
