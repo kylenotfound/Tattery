@@ -13,26 +13,31 @@ use Auth;
 class LikeController extends Controller {
 
     public function like($id) {
-        //TODO make this actually good
+        //Find the tattoo to be liked. 404 if it doesnt exist
         $tattoo = Tattoo::findOrFail($id);
         $user = auth()->user();
+
         $user->like($tattoo);
-        $totalLikesOnTattoo = Helpers::likes($user, $tattoo);
+        $totalLikesOnTattoo = Helpers::likes($tattoo);
+
         return response()->json([
-            'liked' => 1,
+            'liked' => 'liked',
             'count' => $totalLikesOnTattoo
         ]);
     }
 
     public function unlike($id) {
-        //TODO make this actually good
+        //Find the tattoo to be unliked. 404 if it doesnt exist
         $tattoo = Tattoo::findOrFail($id);
         $user = auth()->user();
+
         $user->unlike($tattoo);
-        $totalLikesOnTattoo = Helpers::likes($user, $tattoo);
+        $totalLikesOnTattoo = Helpers::likes($tattoo);
+
         return response()->json([
-            'liked' => 0,
+            'liked' => 'unliked',
             'count' => $totalLikesOnTattoo
         ]);
     }
+
 }

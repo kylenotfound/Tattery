@@ -46,6 +46,8 @@
         </span>
         <br>
         <span>{{$user->getBio()}}</span>
+        <br>
+        <span>Total Likes: {{ Helpers::getUserTotalLikeCount($user) }}</span>
       </div>
     </div>
   </div>
@@ -70,13 +72,22 @@
             @endif
             @foreach($tattoos as $tattoo)
               <div class="card mb-2">
-              <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
-                <p>{{ $tattoo->getDescription() }}</p>
-                <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
-                  @csrf
-                  <label>Delete Post</label>
-                  <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
-                </form>
+                <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+                <div class="card-body">
+                  <span>{{$tattoo->getDescription()}}</span>
+                </div>
+                <div class="card-footer">
+                  <like
+                      tattoo-id= "{{ $tattoo->getId() }}"
+                      original-like-state= "{{ $user->isLiking($tattoo) ? 'liked' : 'unliked' }}"
+                      original-like-count= "{{ Helpers::likes($tattoo) }}"
+                  />
+                </div>
+                  <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
+                    @csrf
+                    <label>Delete Post</label>
+                    <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
+                  </form>
               </div>
             @endforeach
             {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->

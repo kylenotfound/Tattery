@@ -2,12 +2,12 @@
 
     <section class="section">
         <!--If the "userLiked" prop != 1 then the tattoo was not liked by the user -->
-        <div v-if="likeState != 1">
+        <div v-if="likeState != 'liked'">
             <button id="like-button" class="btn btn-primary" @click="likeTattoo">Like</button>
             <span>Likes: {{ likeCount }}</span>
         </div>
         <!--Otherwise the tattoo was liked by the user -->
-        <div v-if="likeState == 1">
+        <div v-if="likeState == 'liked'">
             <button id="like-button" class="btn btn-primary" @click="likeTattoo">Unlike</button>
             <span>Likes: {{ likeCount }}</span>
         </div>
@@ -29,7 +29,7 @@
 
         methods: {
             likeTattoo() {
-                if (this.likeState != 1) {
+                if (this.likeState != 'liked') {
                     axios.post('/like/' + this.tattooId)
                     .then(response => {
                         this.likeState = response.data.liked;
@@ -37,10 +37,11 @@
                         document.getElementById('like-button').innerText = "UnLike";
                     })
                     .catch(error => {
+                        alert('Could not like this post! Was it deleted?');
                         console.log(error);
                     });
                 }
-                if(this.likeState == 1) {
+                if(this.likeState == 'liked') {
                     axios.post('/unlike/' + this.tattooId)
                     .then(response => {
                         this.likeState = response.data.liked;
@@ -48,6 +49,7 @@
                         document.getElementById('like-button').innerText = "Like";
                     })
                     .catch(error => {
+                        alert('Could not unlike this post! Was it deleted?');
                         console.log(error);
                     });
                 }
