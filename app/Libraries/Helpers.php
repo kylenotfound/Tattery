@@ -19,4 +19,9 @@ class Helpers {
     return asset('/storage/users/' . $user->getStorageDir() . '/uploads/' . $tattoo->getTattooImageName());
   }
 
+  public static function likes(User $user, Tattoo $tattoo) : int {
+    //return the count of users that like the tattoo
+    return $tattoo->likers(User::class)->count();
+  }
+
 }

@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Rennokki\Befriended\Traits\Follow;
 use Rennokki\Befriended\Contracts\Following;
+use Rennokki\Befriended\Traits\CanLike;
+use Rennokki\Befriended\Contracts\Liker;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements Following {
-    use HasApiTokens, HasFactory, Notifiable, Follow;
+class User extends Authenticatable implements Following, Liker {
+    use HasApiTokens, HasFactory, Notifiable, Follow, CanLike;
 
     /**
      * The attributes that are mass assignable.
@@ -79,7 +81,7 @@ class User extends Authenticatable implements Following {
     public function getPronouns() {
         return $this->pronouns;
     }
-    
+
     public function getAge() {
         return $this->age;
     }
@@ -88,7 +90,7 @@ class User extends Authenticatable implements Following {
      * Mutator functions
      */
     public function changeDisplayName($newDisplayName) {
-        //If the display name we are updating doesn't belong to another user 
+        //If the display name we are updating doesn't belong to another user
         if(User::where('display_name', '=', $newDisplayName)->exists() && !$this) {
             return false;
         } else {
@@ -97,5 +99,9 @@ class User extends Authenticatable implements Following {
             $this->refresh();
             return true;
         }
+    }
+
+    public function tattoos() {
+        return $this->hasMany(Tattoo::class);
     }
 }

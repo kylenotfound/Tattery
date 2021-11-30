@@ -47,3 +47,9 @@ Route::get('/search', [App\Http\Controllers\SearchController::class, 'returnUser
 Route::get('/tattoo/upload', [App\Http\Controllers\TattooController::class, 'index'])->name('tattoo.upload');
 Route::post('/tattoo/upload/store', [App\Http\Controllers\TattooController::class, 'store'])->name('tattoo.upload-store');
 Route::post('/tattoo/delete/{id}', [App\Http\Controllers\TattooController::class, 'delete'])->name('tattoo.delete');
+
+/**
+ * Like a Tattoo
+ */
+Route::post('/like/{id}', [App\Http\Controllers\LikeController::class, 'like'])->name('tattoo.like');
+Route::post('/unlike/{id}', [App\Http\Controllers\LikeController::class, 'unlike'])->name('tattoo.unlike');

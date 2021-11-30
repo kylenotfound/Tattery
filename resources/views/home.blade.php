@@ -27,13 +27,7 @@
                     <span>No posts to display.</span>
                 @endif
                 @foreach($tattoos as $tattoo)
-                    <div class="card border-dark mb-2">
-                        <img src="{{Helpers::getUserAvatar($tattoo->user)}}" width="30px" height="30px"></img>
-                        <a href="{{route('dash', ['id' => $tattoo->user->getDisplayName()])}}">{{$tattoo->user->getDisplayName()}}</a>
-                        <p>Tattoo Shop: {{ $tattoo->getLocation() }}</p>
-                        <img src="{{Helpers::getPublicImageLocationOfTattoo($tattoo)}}" width="250px" height="250px" />
-                        <p>{{ $tattoo->getDescription() }}</p>
-                    </div>
+                    @include('tattoo.tattoo_markup', ['tattoo' => $tattoo, 'user' => $user])
                 @endforeach
             </div>
         </div>
@@ -41,3 +35,5 @@
 
     {{$tattoos->links()}}
 @endsection
+
+
