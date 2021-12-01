@@ -21,7 +21,6 @@ class LikeController extends Controller {
         $totalLikesOnTattoo = Helpers::likes($tattoo);
 
         return response()->json([
-            'liked' => 'liked',
             'count' => $totalLikesOnTattoo
         ]);
     }
@@ -35,7 +34,6 @@ class LikeController extends Controller {
         $totalLikesOnTattoo = Helpers::likes($tattoo);
 
         return response()->json([
-            'liked' => 'unliked',
             'count' => $totalLikesOnTattoo
         ]);
     }

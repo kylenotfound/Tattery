@@ -31,7 +31,7 @@ class Helpers {
     foreach($tattoos as $tattoo) {
       $sum += Helpers::likes($tattoo);
     }
-    
+
     return $sum;
   }
 
