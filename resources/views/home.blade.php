@@ -21,16 +21,14 @@
     @endif
 
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                @if(count($tattoos) == 0)
-                    <span>No posts to display.</span>
-                @endif
-                @foreach($tattoos as $tattoo)
-                    @include('tattoo.tattoo_markup', ['tattoo' => $tattoo, 'user' => $user])
-                @endforeach
-            </div>
-        </div>
+      <div>
+        @if(count($tattoos) == 0)
+            <span>No posts to display.</span>
+        @endif
+        @foreach($tattoos as $tattoo)
+          @include('tattoo.structure', ['tattoo' => $tattoo])
+        @endforeach
+      </div>
     </div>
 
     {{$tattoos->links()}}

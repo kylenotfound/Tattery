@@ -71,23 +71,22 @@
               <span>No posts to display.</span>
             @endif
             @foreach($tattoos as $tattoo)
-              <div class="card mb-2">
-                <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
-                <div class="card-body">
-                  <span>{{$tattoo->getDescription()}}</span>
+              <div class="card border-dark mb-2 align-items-center" style="width: 275px">
+              <p><i class='fas fa-map-marker-alt'></i>{{ $tattoo->getLocation() }}</p>
+              <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+                <div>
+                    <like
+                        tattoo-id= "{{ $tattoo->getId() }}"
+                        original-like-state= "{{ $user->isLiking($tattoo) ? 'liked' : 'unliked' }}"
+                        original-like-count= "{{ Helpers::likes($tattoo) }}"
+                    />
                 </div>
-                <div class="card-footer">
-                  <like
-                      tattoo-id= "{{ $tattoo->getId() }}"
-                      original-like-state= "{{ $user->isLiking($tattoo) ? 'liked' : 'unliked' }}"
-                      original-like-count= "{{ Helpers::likes($tattoo) }}"
-                  />
-                </div>
-                  <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
-                    @csrf
-                    <label>Delete Post</label>
-                    <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
-                  </form>
+                <p>{{ $tattoo->getDescription() }}</p>
+                <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
+                  @csrf
+                  <label>Delete Post</label>
+                  <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
+                </form>
               </div>
             @endforeach
             {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->

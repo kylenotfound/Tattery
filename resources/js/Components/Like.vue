@@ -30,11 +30,12 @@
         methods: {
             likeTattoo() {
                 if (this.likeState != 'liked') {
+
                     axios.post('/like/' + this.tattooId)
                     .then(response => {
+                        document.getElementById('like-button').innerText = "UnLike";
                         this.likeState = response.data.liked;
                         this.likeCount = response.data.count;
-                        document.getElementById('like-button').innerText = "UnLike";
                     })
                     .catch(error => {
                         alert('Could not like this post! Was it deleted?');
@@ -44,9 +45,9 @@
                 if(this.likeState == 'liked') {
                     axios.post('/unlike/' + this.tattooId)
                     .then(response => {
+                        document.getElementById('like-button').innerText = "Like";
                         this.likeState = response.data.liked;
                         this.likeCount = response.data.count;
-                        document.getElementById('like-button').innerText = "Like";
                     })
                     .catch(error => {
                         alert('Could not unlike this post! Was it deleted?');
