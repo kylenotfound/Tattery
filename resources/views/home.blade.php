@@ -33,3 +33,5 @@
 
     {{$tattoos->links()}}
 @endsection
+
+

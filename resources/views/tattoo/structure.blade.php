@@ -9,7 +9,14 @@
     </div>
     <div class="card-body align-items-center" style="width: 275px">
         <img src="{{Helpers::getPublicImageLocationOfTattoo($tattoo)}}" width="250px" height="250px" />
-        <p>{{ $tattoo->getDescription() }}</p>
+        <span>{{$tattoo->getDescription()}}</span>
+        <div class="card-footer">
+            <like
+                tattoo-id= "{{ $tattoo->getId() }}"
+                original-like-state= "{{ $user->isLiking($tattoo) ? 'liked' : 'unliked' }}"
+                original-like-count= "{{ Helpers::likes($tattoo) }}"
+            />
+        </div>
     </div>
   </div>
 </div>

@@ -46,6 +46,8 @@
         </span>
         <br>
         <span>{{$user->getBio()}}</span>
+        <br>
+        <span>Total Likes: {{ Helpers::getUserTotalLikeCount($user) }}</span>
       </div>
     </div>
   </div>
@@ -72,6 +74,13 @@
               <div class="card border-dark mb-2 align-items-center" style="width: 275px">
               <p><i class='fas fa-map-marker-alt'></i>{{ $tattoo->getLocation() }}</p>
               <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+                <div>
+                    <like
+                        tattoo-id= "{{ $tattoo->getId() }}"
+                        original-like-state= "{{ $user->isLiking($tattoo) ? 'liked' : 'unliked' }}"
+                        original-like-count= "{{ Helpers::likes($tattoo) }}"
+                    />
+                </div>
                 <p>{{ $tattoo->getDescription() }}</p>
                 <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
                   @csrf

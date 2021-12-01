@@ -10,7 +10,7 @@
         <title>{{ config('app.name', 'TattooGallery') }}</title>
 
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/compiled/app.js') }}" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
         <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
@@ -25,15 +25,11 @@
     <div id="app">
       <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
+            <a class="navbar-brand" href="{{ route('welcome') }}">
                 {{ config('app.name', 'TattooGallery') }}
             </a> 
-            <a href="{{ route('explore') }}">
-                Explore
-            </a> 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <a class="p-2" href="{{ route('home') }}">Home</a> 
+            <a class="p-2" href="{{ route('explore') }}">Explore</a> 
             @auth
                 <ul class="nav justify-content-center">
                     <li class="nav-item">
@@ -41,6 +37,9 @@
                     </li>
                 </ul>
             @endauth
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+              <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">

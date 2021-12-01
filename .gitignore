@@ -17,6 +17,7 @@ public_html/storage
 public_html/hot
 /public/hot
 /public/js/app.js
+/public/js/compiled/*
 /public/js/app/**/compiled.*
 /public/js/app/**/*.map
 /public/js/*.map
