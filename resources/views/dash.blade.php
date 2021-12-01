@@ -69,7 +69,8 @@
               <span>No posts to display.</span>
             @endif
             @foreach($tattoos as $tattoo)
-              <div class="card mb-2">
+              <div class="card border-dark mb-2 align-items-center" style="width: 275px">
+              <p><i class='fas fa-map-marker-alt'></i>{{ $tattoo->getLocation() }}</p>
               <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
                 <p>{{ $tattoo->getDescription() }}</p>
                 <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
