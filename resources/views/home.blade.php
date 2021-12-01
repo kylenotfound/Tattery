@@ -21,22 +21,14 @@
     @endif
 
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                @if(count($tattoos) == 0)
-                    <span>No posts to display.</span>
-                @endif
-                @foreach($tattoos as $tattoo)
-                    <div class="card border-dark mb-2">
-                        <img src="{{Helpers::getUserAvatar($tattoo->user)}}" width="30px" height="30px"></img>
-                        <a href="{{route('dash', ['id' => $tattoo->user->getDisplayName()])}}">{{$tattoo->user->getDisplayName()}}</a>
-                        <p>Tattoo Shop: {{ $tattoo->getLocation() }}</p>
-                        <img src="{{Helpers::getPublicImageLocationOfTattoo($tattoo)}}" width="250px" height="250px" />
-                        <p>{{ $tattoo->getDescription() }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
+      <div>
+        @if(count($tattoos) == 0)
+            <span>No posts to display.</span>
+        @endif
+        @foreach($tattoos as $tattoo)
+          @include('tattoo.structure', ['tattoo' => $tattoo])
+        @endforeach
+      </div>
     </div>
 
     {{$tattoos->links()}}
