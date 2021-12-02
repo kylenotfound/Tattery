@@ -47,6 +47,18 @@
         <br>
         <span>{{$user->getBio()}}</span>
         <br>
+        @if(auth()->user() != $user)
+          <follow 
+            user-id="{{$user->getId()}}" 
+            state="{{auth()->user()->isFollowing($user) ? true : false}}"
+            followers-count="{{$user->followers()->count()}}"
+            following-count="{{$user->following()->count()}}"
+          />
+        @else
+          <span>Followers: {{$user->followers()->count()}}</span>
+          <span>Following: {{$user->following()->count()}}</span>
+          <br>
+        @endif
         <span>Total Likes: {{ Helpers::getUserTotalLikeCount($user) }}</span>
       </div>
     </div>
