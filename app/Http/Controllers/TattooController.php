@@ -9,7 +9,7 @@ use Auth;
 use File;
 
 class TattooController extends Controller {
-    
+
     public function index() {
         return view('tattoo.upload');
     }
@@ -53,7 +53,7 @@ class TattooController extends Controller {
             $uploads = File::files('./storage/tattoos');
             //foreach upload in the storage dir
             foreach ($uploads as $upload) {
-                //foreach tattoo row associated with the user at hand, 
+                //foreach tattoo row associated with the user at hand,
                 if (basename($upload) == $tattoo->getTattooImageName()) {
                     File::delete($upload);
                 }

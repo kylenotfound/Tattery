@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Auth;
 
 class FollowController extends Controller {
-    
+
     public function follow($id) {
         $follower = auth()->user();
         $followee = User::findOrFail($id);
@@ -26,7 +26,7 @@ class FollowController extends Controller {
         $followee = User::findOrFail($id);
 
         $followee->revokeFollower($follower);
-        
+
         return response()->json([
             'followersCount' => $followee->followers()->count(),
             'followingCount' => $followee->following()->count(),

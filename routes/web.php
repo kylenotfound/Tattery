@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/follow/{id}', [App\Http\Controllers\FollowController::class, 'follow'])->name('user.follow');
     Route::post('/unfollow/{id}', [App\Http\Controllers\FollowController::class, 'unfollow'])->name('user.unfollow');
 
-    
+
     /**
      * User Settings
      */
