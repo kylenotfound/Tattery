@@ -8,7 +8,7 @@ use App\Models\Tattoo;
 use Auth;
 
 class HomeController extends Controller {
-    
+
     public function index() {
 
         //TODO follower scoped tattoos returned for home page

@@ -1,16 +1,9 @@
 <template>
 
     <section class="section">
-        <!--If the "userLiked" prop != 1 then the tattoo was not liked by the user -->
-        <div v-if="likeState != 'liked'">
-            <button id="like-button" class="btn btn-primary" @click="likeTattoo">Like</button>
-            <span>Likes: {{ likeCount }}</span>
-        </div>
-        <!--Otherwise the tattoo was liked by the user -->
-        <div v-if="likeState == 'liked'">
-            <button id="like-button" class="btn btn-primary" @click="likeTattoo">Unlike</button>
-            <span>Likes: {{ likeCount }}</span>
-        </div>
+         <button class="btn btn-primary" @click="likeTattoo" v-text="buttonText"></button>
+         <br>
+         <span v-text="countText"></span>
     </section>
 
 </template>
@@ -18,45 +11,49 @@
 <script>
     export default {
 
-        props: ['tattooId', 'originalLikeState', 'originalLikeCount'],
+        props: ['tattooId', 'likes', 'count'],
 
         data: function() {
             return {
-                likeState: this.originalLikeState,
-                likeCount: this.originalLikeCount,
+                status: this.likes,
+                likeCount: this.count,
             }
         },
 
         methods: {
             likeTattoo() {
-                if (this.likeState != 'liked') {
-
+                if (this.status != true) {
                     axios.post('/like/' + this.tattooId)
                     .then(response => {
-                        document.getElementById('like-button').innerText = "UnLike";
-                        this.likeState = response.data.liked;
+                        this.status = !this.status;
                         this.likeCount = response.data.count;
                     })
                     .catch(error => {
-                        alert('Could not like this post! Was it deleted?');
                         console.log(error);
                     });
                 }
-                if(this.likeState == 'liked') {
+                if(this.status == true) {
                     axios.post('/unlike/' + this.tattooId)
                     .then(response => {
-                        document.getElementById('like-button').innerText = "Like";
-                        this.likeState = response.data.liked;
+                        this.status = !this.status;
                         this.likeCount = response.data.count;
                     })
                     .catch(error => {
-                        alert('Could not unlike this post! Was it deleted?');
                         console.log(error);
                     });
                 }
+            },
+        },
 
+        computed: {
+            buttonText() {
+                return (this.status) ? 'Unlike' : 'Like';
             },
 
-        }
+            countText() {
+                return "Likes: " + this.likeCount;
+            }
+        },
+
     };
 </script>
