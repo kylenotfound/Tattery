@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\Likes;
+use App\Models\Like;
 
 class Tattoo extends Model {
     use HasFactory;
@@ -23,7 +23,7 @@ class Tattoo extends Model {
     }
 
     public function likes() {
-        return $this->hasMany(Likes::class);
+        return $this->hasMany(Like::class);
     }
 
     public function getTattooImageName() {

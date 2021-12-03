@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Likes;
+use App\Models\Like;
 use App\Models\Followers;
 use App\Models\Tattoo;
 use Auth;
@@ -110,7 +110,7 @@ class User extends Authenticatable {
     }
 
     public function like(Tattoo $tattoo) {
-        $like = Likes::where('likers_user_id', '=', $this->id)
+        $like = Like::where('likers_user_id', '=', $this->id)
             ->where('tattoo_id', '=', $tattoo->id)
             ->get();
 
@@ -118,7 +118,7 @@ class User extends Authenticatable {
             return false;
         }
 
-        $like = new Likes;
+        $like = new Like;
         $like->likers_user_id = $this->id;
         $like->tattoo_id = $tattoo->id;
         $like->save();
@@ -127,7 +127,7 @@ class User extends Authenticatable {
     }
 
     public function unlike(Tattoo $tattoo) {
-        $like = Likes::where('likers_user_id', '=', $this->id)
+        $like = Like::where('likers_user_id', '=', $this->id)
             ->where('tattoo_id', '=', $tattoo->id);
 
         if ($like == null) {
@@ -140,61 +140,76 @@ class User extends Authenticatable {
     }
 
     public function isLiking(Tattoo $tattoo) {
-        $user = auth()->user();
-
-        $like = Likes::where('likers_user_id', '=', $user->id)
-            ->where('tattoo_id', '=', $tattoo->id)
+        $like = Like::where('likers_user_id', '=', $this->id)
+            ->where('tattoo_id', '=', $tattoo->getId())
             ->exists();
 
-        if($like != null) {
-            return true;
-        } else {
+        if($like == null) {
             return false;
         }
+
+        return true;
     }
 
     public function getAllLikes() {
         $tattoos = Tattoo::where('user_id', '=', $this->id)->get();
-        if (count($tattoos) > 0) {
-            $sum = 0;
-            foreach($tattoos as $tattoo) {
-                $sum += count($tattoo->likes);
-            }
-            return $sum;
-        } else {
+        if (count($tattoos) <= 0) {
             return 0;
+        } 
+
+        $sum = 0;
+        foreach($tattoos as $tattoo) {
+            $sum += count($tattoo->likes);
         }
+        return $sum;
     }
 
     public function follow($id) {
         $userWeAreFollowing = User::findOrFail($id);
-        $userWhoIsGoingToFollow = auth()->user();
+        $userWhoIsGoingToFollow = $this->getId();
+
+        //If the user is already following the user and they try to follow again
+        if ($userWhoIsGoingToFollow->isFollowing($userWeAreFollowing)) {
+            return false;
+        }
 
         $follow = new Follow;
-        $follow->follower_user_id = $userWeAreFollowing->id;
-        $follow->followee_user_id = $userWhoIsGoingToFollow->id;
+        $follow->follower_user_id = $userWeAreFollowing->getId();
+        $follow->followee_user_id = $userWhoIsGoingToFollow->getId();
         $follow->save();
+
+        return true;
     }
 
     public function unfollow($id) {
         $userWeAreUnFollowing = User::findOrFail($id);
-        $userWhoIsGoingToUnFollow = auth()->user();
+        $userWhoIsGoingToUnFollow = $this->getId();
 
-        $follow = Follow::where('follower_user_id', '=', $user1->id)
-            ->where('followee_user_id', '=', $user2->id)
-            ->get();
-
-        if($follow) {
-            $follow->delete();
+        if(!$userWhoIsGoingToFollow->isFollowing($userWeAreUnFollowing)) {
+            return false;
         }
+
+        $follow = Follow::where('follower_user_id', '=', $userWeAreUnFollowing->getId())
+            ->where('followee_user_id', '=', $userWhoIsGoingToUnFollow->getId());
+        
+        if ($follow == null) {
+            return false;
+        }
+
+        $follow->delete();
+        return $true;
     }
 
     public function isFollowing($id) {
         $user1 = User::findOrFail($id);
-        $user2 = auth()->user();
 
-        $follow = Follow::where('follower_user_id', '=', $user1->id)
-            ->where('followee_user_id', '=', $user2->id)->exists();
-        return $follow;
+        $follow = Follow::where('follower_user_id', '=', $user1->getId())
+            ->where('followee_user_id', '=', $this->getId())->exists();
+
+        if ($follow == null) {
+            return false;
+        }
+
+        return $true;
     }
 }

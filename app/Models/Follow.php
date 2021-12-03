@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Auth;
 
-class Followers extends Model {
+class Follow extends Model {
 
-    protected $table = 'followers';
+    protected $table = 'follows';
 
     protected $fillable = ['follower_user_id', 'followee_user_id'];
 

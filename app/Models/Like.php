@@ -8,7 +8,7 @@ use App\Models\Tattoo;
 use App\Models\User;
 use Auth;
 
-class Likes extends Model {
+class Like extends Model {
 
     protected $table = 'likes';
 
