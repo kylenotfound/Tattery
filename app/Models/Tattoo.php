@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Rennokki\Befriended\Traits\CanBeLiked;
-use Rennokki\Befriended\Contracts\Likeable;
 use App\Models\User;
+use App\Models\Likes;
 
-class Tattoo extends Model implements Likeable {
-    use HasFactory, CanBeLiked;
+class Tattoo extends Model {
+    use HasFactory;
 
     protected $fillable = [
         'user_id', 'tattoo_image_name', 'description', 'location'
@@ -23,6 +22,10 @@ class Tattoo extends Model implements Likeable {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function likes() {
+        return $this->hasMany(Likes::class);
+    }
+
     public function getTattooImageName() {
         return $this->tattoo_image_name;
     }
@@ -33,6 +36,10 @@ class Tattoo extends Model implements Likeable {
 
     public function getLocation() {
         return $this->location;
+    }
+
+    public function getNumOflikes() {
+        return count($this->likes);
     }
 
 }

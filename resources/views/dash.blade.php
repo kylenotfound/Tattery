@@ -47,7 +47,7 @@
         <br>
         <span>{{$user->getBio()}}</span>
         <br>
-        <span>Total Likes: {{ Helpers::getUserTotalLikeCount($user) }}</span>
+        <span>Total Likes: {{ $user->getAllLikes() }}</span>
       </div>
     </div>
   </div>
@@ -77,8 +77,8 @@
                 <div>
                     <like
                         tattoo-id= "{{ $tattoo->getId() }}"
-                        likes= "{{ $user->isLiking($tattoo) ? true : false }}"
-                        count= "{{ Helpers::likes($tattoo) }}"
+                        likes= "{{ $user->isLiking($tattoo) }}"
+                        count= "{{ $tattoo->getNumOflikes() }}"
                     />
                 </div>
                 <p>{{ $tattoo->getDescription() }}</p>

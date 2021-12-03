@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Libraries\Helpers;
 
 use App\Models\Tattoo;
+use App\Models\Likes;
 use App\Models\User;
 use Auth;
 
@@ -18,10 +19,9 @@ class LikeController extends Controller {
         $user = auth()->user();
 
         $user->like($tattoo);
-        $totalLikesOnTattoo = Helpers::likes($tattoo);
 
         return response()->json([
-            'count' => $totalLikesOnTattoo
+            'count' => $tattoo->getNumOfLikes()
         ]);
     }
 
@@ -31,10 +31,11 @@ class LikeController extends Controller {
         $user = auth()->user();
 
         $user->unlike($tattoo);
-        $totalLikesOnTattoo = Helpers::likes($tattoo);
+
+        $totalLikesOnTattoo = $tattoo->likes;
 
         return response()->json([
-            'count' => $totalLikesOnTattoo
+            'count' => $tattoo->getNumOfLikes()
         ]);
     }
 
