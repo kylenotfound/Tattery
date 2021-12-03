@@ -40,6 +40,16 @@
 
       <div class="col col-sm-6  text-left">
         <p class="h5 my-0">{{$user->getDisplayName()}}</p>
+        <div class="div">
+            @if(auth()->user() != $user)
+            <follow
+              user-id="{{$user->getId()}}"
+              state="{{auth()->user()->isFollowing($user)}}"
+              followers-count="{{count($user->followers)}}"
+              following-count="{{count($user->following())}}"
+            />
+            @endif
+        </div>
         <br>
         <span><b>{{$user->getName()}}</b>
           <span style="font-size: 16px;" class="ml-1"><i>Age: {{$user->getAge()}} </i>| <i>Pronouns: {{$user->getPronouns()}} </i>| <i>Virgin Status: {{$user->getVirginStatus()}}</i></span>
@@ -47,6 +57,12 @@
         <br>
         <span>{{$user->getBio()}}</span>
         <br>
+        <div>
+          <followcounter
+            followers-count="{{count($user->followers)}}"
+            following-count="{{count($user->following())}}"
+          />
+        </div>
         <span>Total Likes: {{ $user->getAllLikes() }}</span>
       </div>
     </div>
@@ -57,9 +73,8 @@
   <div class="container">
     <div class="btn-group btn-group-sm d-flex flex-row justify-content-evenly pb-3">
       <button id="posts" type="button" data-section="section1" class="btn btn-dark segmentedButton">Posts</button>
-
       @if(Auth::user()->id == $user->id)
-      <button type="button" data-section="section2" class="btn btn-dark segmentedButton">Edit Profile</button>
+        <button type="button" data-section="section2" class="btn btn-dark segmentedButton">Edit Profile</button>
       @endif
     </div>
 

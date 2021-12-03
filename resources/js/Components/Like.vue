@@ -1,8 +1,7 @@
 <template>
 
     <section class="section">
-         <button class="btn btn-primary" @click="likeTattoo" v-text="buttonText"></button>
-         <br>
+         <button class="btn btn-primary p-2" @click="likeTattoo" v-text="buttonText"></button>
          <span v-text="countText"></span>
     </section>
 
@@ -22,7 +21,7 @@
 
         methods: {
             likeTattoo() {
-                if (this.status != true) {
+                if (!this.status) {
                     axios.post('/like/' + this.tattooId)
                     .then(response => {
                         this.status = !this.status;
@@ -32,7 +31,7 @@
                         console.log(error);
                     });
                 }
-                if(this.status == true) {
+                if (this.status) {
                     axios.post('/unlike/' + this.tattooId)
                     .then(response => {
                         this.status = !this.status;

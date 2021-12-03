@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Like;
-use App\Models\Followers;
+use App\Models\Follow;
 use App\Models\Tattoo;
 use Auth;
 
@@ -106,7 +106,11 @@ class User extends Authenticatable {
     }
 
     public function followers() {
-        return $this->hasMany(Followers::class);
+        return $this->hasMany(Follow::class, 'follower_user_id');
+    }
+
+    public function following() {
+        return Follow::where('followee_user_id', '=', $this->getId())->get();
     }
 
     public function like(Tattoo $tattoo) {
@@ -152,7 +156,7 @@ class User extends Authenticatable {
     }
 
     public function getAllLikes() {
-        $tattoos = Tattoo::where('user_id', '=', $this->id)->get();
+        $tattoos = Tattoo::where('user_id', '=', $this->getId())->get();
         if (count($tattoos) <= 0) {
             return 0;
         } 
@@ -161,48 +165,41 @@ class User extends Authenticatable {
         foreach($tattoos as $tattoo) {
             $sum += count($tattoo->likes);
         }
+
         return $sum;
     }
 
-    public function follow($id) {
-        $userWeAreFollowing = User::findOrFail($id);
-        $userWhoIsGoingToFollow = $this->getId();
-
+    public function follow(User $userWeAreFollowing) {
         //If the user is already following the user and they try to follow again
-        if ($userWhoIsGoingToFollow->isFollowing($userWeAreFollowing)) {
+        if ($this->isFollowing($userWeAreFollowing)) {
             return false;
         }
 
         $follow = new Follow;
         $follow->follower_user_id = $userWeAreFollowing->getId();
-        $follow->followee_user_id = $userWhoIsGoingToFollow->getId();
+        $follow->followee_user_id = $this->getId();
         $follow->save();
 
         return true;
     }
 
-    public function unfollow($id) {
-        $userWeAreUnFollowing = User::findOrFail($id);
-        $userWhoIsGoingToUnFollow = $this->getId();
-
-        if(!$userWhoIsGoingToFollow->isFollowing($userWeAreUnFollowing)) {
+    public function unfollow(User $userWeAreUnFollowing) {
+        if(!$this->isFollowing($userWeAreUnFollowing)) {
             return false;
         }
 
         $follow = Follow::where('follower_user_id', '=', $userWeAreUnFollowing->getId())
-            ->where('followee_user_id', '=', $userWhoIsGoingToUnFollow->getId());
+            ->where('followee_user_id', '=', $this->getId());
         
         if ($follow == null) {
             return false;
         }
 
         $follow->delete();
-        return $true;
+        return true;
     }
 
-    public function isFollowing($id) {
-        $user1 = User::findOrFail($id);
-
+    public function isFollowing(User $user1) {;
         $follow = Follow::where('follower_user_id', '=', $user1->getId())
             ->where('followee_user_id', '=', $this->getId())->exists();
 
@@ -210,6 +207,6 @@ class User extends Authenticatable {
             return false;
         }
 
-        return $true;
+        return true;
     }
 }
