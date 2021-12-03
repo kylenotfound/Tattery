@@ -29,6 +29,13 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/dash/{id}/delete', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('user.delete');
 
     /**
+     * Follow and unfollow a user
+     */
+    Route::post('/follow/{id}', [App\Http\Controllers\FollowController::class, 'follow'])->name('user.follow');
+    Route::post('/unfollow/{id}', [App\Http\Controllers\FollowController::class, 'unfollow'])->name('user.unfollow');
+
+
+    /**
      * User Settings
      */
     Route::get('/{id}/settings', [App\Http\Controllers\UserAccountSettingsController::class, 'index'])->name('user.settings');
