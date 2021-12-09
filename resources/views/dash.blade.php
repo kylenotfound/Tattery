@@ -46,7 +46,7 @@
               user-id="{{$user->getId()}}"
               state="{{auth()->user()->isFollowing($user)}}"
               followers-count="{{count($user->followers)}}"
-              following-count="{{count($user->following())}}"
+              following-count="{{count($user->following)}}"
             />
             @endif
         </div>
@@ -60,7 +60,7 @@
         <div>
           <followcounter
             followers-count="{{count($user->followers)}}"
-            following-count="{{count($user->following())}}"
+            following-count="{{count($user->following)}}"
           />
         </div>
         <span>Total Likes: {{ $user->getAllLikes() }}</span>

@@ -15,37 +15,42 @@ use Auth;
 class User extends Authenticatable {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
     protected $fillable = [
         'external_id', 'name', 'display_name', 'email', 'password', 'avatar', 'pronouns', 'bio', 'virgin_status', 'unique_storage_dir', 'age'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
+    public function tattoos() {
+        return $this->hasMany(Tattoo::class);
+    }
+
     /**
-     * Accessor functions
+     * follower_user_id corresponds to a user that is a follower of many other users
+     * therefore following() returns all of the users $this user is a follower of.
+     *
+     * followee_user_id corresponds to the user that a user is following
+     * therefore a user is the followee to many other users.
      */
+
+    public function followers() {
+        return $this->belongsToMany(User::class, 'follows', 'followee_user_id', 'follower_user_id');
+    }
+
+
+    public function following() {
+        return $this->belongsToMany(User::class, 'follows', 'follower_user_id', 'followee_user_id');
+    }
+
+    public function likes() {
+        return $this->hasMany(Like::class, 'likers_user_id');
+    }
+
     public function getId() {
         return $this->id;
     }
@@ -101,18 +106,6 @@ class User extends Authenticatable {
         }
     }
 
-    public function tattoos() {
-        return $this->hasMany(Tattoo::class);
-    }
-
-    public function followers() {
-        return $this->hasMany(Follow::class, 'follower_user_id');
-    }
-
-    public function following() {
-        return Follow::where('followee_user_id', '=', $this->getId())->get();
-    }
-
     public function like(Tattoo $tattoo) {
         $like = Like::where('likers_user_id', '=', $this->id)
             ->where('tattoo_id', '=', $tattoo->id)
@@ -159,7 +152,7 @@ class User extends Authenticatable {
         $tattoos = Tattoo::where('user_id', '=', $this->getId())->get();
         if (count($tattoos) <= 0) {
             return 0;
-        } 
+        }
 
         $sum = 0;
         foreach($tattoos as $tattoo) {
@@ -176,8 +169,8 @@ class User extends Authenticatable {
         }
 
         $follow = new Follow;
-        $follow->follower_user_id = $userWeAreFollowing->getId();
-        $follow->followee_user_id = $this->getId();
+        $follow->follower_user_id = $this->getId(); //$this user is a new follower
+        $follow->followee_user_id = $userWeAreFollowing->getId(); //the user we are following is the followee
         $follow->save();
 
         return true;
@@ -188,9 +181,9 @@ class User extends Authenticatable {
             return false;
         }
 
-        $follow = Follow::where('follower_user_id', '=', $userWeAreUnFollowing->getId())
-            ->where('followee_user_id', '=', $this->getId());
-        
+        $follow = Follow::where('follower_user_id', $this->getId())
+            ->where('followee_user_id', $userWeAreUnFollowing->getId());
+
         if ($follow == null) {
             return false;
         }
@@ -199,9 +192,10 @@ class User extends Authenticatable {
         return true;
     }
 
-    public function isFollowing(User $user1) {;
-        $follow = Follow::where('follower_user_id', '=', $user1->getId())
-            ->where('followee_user_id', '=', $this->getId())->exists();
+    public function isFollowing(User $followee) {
+        //checking if $this user is a follower of the $followee
+        $follow = Follow::where('follower_user_id', $this->getId())
+            ->where('followee_user_id', $followee->getId())->exists();
 
         if ($follow == null) {
             return false;

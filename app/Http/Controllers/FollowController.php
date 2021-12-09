@@ -17,7 +17,7 @@ class FollowController extends Controller {
 
         return response()->json([
             'followersCount' => count($followee->followers),
-            'followingCount' => count($followee->following()),
+            'followingCount' => count($followee->following),
         ]);
     }
 
@@ -29,7 +29,7 @@ class FollowController extends Controller {
 
         return response()->json([
             'followersCount' => count($followee->followers),
-            'followingCount' => count($followee->following()),
+            'followingCount' => count($followee->following),
         ]);
     }
 }

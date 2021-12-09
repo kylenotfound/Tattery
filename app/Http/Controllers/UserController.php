@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Libraries\Helpers;
 use App\Models\Tattoo;
+use App\Models\Follow;
 use App\Models\User;
+use App\Models\Like;
 use File;
 use Auth;
 
 class UserController extends Controller {
-    
+
     public function index($id) {
         $user = User::where('display_name', '=', $id)->first();
         $tattoos = Tattoo::where('user_id', '=', $user->getId())->orderBy('created_at', 'desc')->paginate(10);
@@ -50,13 +52,13 @@ class UserController extends Controller {
         $newAge = $request->input('age') ?? $user->getAge();
 
         $user->update([
-            'name' => $newName, 
-            'bio' => $newBio, 
+            'name' => $newName,
+            'bio' => $newBio,
             'virgin_status' => $newVirginStatus,
             'pronouns' => $newPronouns,
             'age' => $newAge
         ]);
-        
+
         if($user->changeDisplayName($newUserName)) {
             return redirect()->route('dash', ['id' => $user->getDisplayName()])
                 ->with(['success' => 'Profile Updated!']);
@@ -67,14 +69,24 @@ class UserController extends Controller {
     }
 
     public function deleteUser(Request $request) {
-        $user = Auth::user();
-        $tattoos = Tattoo::where('user_id', '=', $user->getId())->get();
+        $user = auth()->user();
+        $tattoos = $user->tattoos;
+        $likes = $user->likes;
+        $follows = $user->following();
 
         self::deleteUserContent($user, $tattoos);
 
-        //remove every tattoo row in the db that a user has
+        //remove every tattoo, follow and like row in the db that a user has
         foreach($tattoos as $tattoo) {
             $tattoo->delete();
+        }
+
+        foreach($likes as $like) {
+            $like->delete();
+        }
+
+        foreach($follows as $follow) {
+            $follow->delete();
         }
 
         //logout the user and delete them!
@@ -94,7 +106,7 @@ class UserController extends Controller {
         //remove the old image
         if (File::exists($oldAvatar)) {
             unlink($oldAvatar);
-        } 
+        }
         //get attributes of image
         $newAvatar = $image->getClientOriginalName();
         $fileName = pathinfo($newAvatar, PATHINFO_FILENAME);
@@ -114,7 +126,7 @@ class UserController extends Controller {
             $uploads = File::files('./storage/tattoos');
             //foreach upload in the storage dir
             foreach ($uploads as $upload) {
-                //foreach tattoo row associated with the user at hand, 
+                //foreach tattoo row associated with the user at hand,
                 foreach($tattoos as $tattoo) {
                     //if the names of the photo in the db match the photo name in the tattoos folder, remove it
                     if (basename($upload) == $tattoo->getTattooImageName()) {
@@ -135,7 +147,7 @@ class UserController extends Controller {
                 }
                 rmdir('./storage/users/' . $user->getStorageDir() . '/avatars/');
             }
-            
+
             if (File::exists('./storage/users/' . $user->getStorageDir() . '/uploads/')) {
                 $uploads = File::files('./storage/users/' . $user->getStorageDir() . '/uploads/');
                 //loop through each upload and remove it from the uploads dir
