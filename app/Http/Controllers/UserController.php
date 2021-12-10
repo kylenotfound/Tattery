@@ -71,23 +71,10 @@ class UserController extends Controller {
     public function deleteUser(Request $request) {
         $user = auth()->user();
         $tattoos = $user->tattoos;
-        $likes = $user->likes;
-        $follows = $user->following();
+        $following = $user->following;
+        $followers = $user->followers;
 
         self::deleteUserContent($user, $tattoos);
-
-        //remove every tattoo, follow and like row in the db that a user has
-        foreach($tattoos as $tattoo) {
-            $tattoo->delete();
-        }
-
-        foreach($likes as $like) {
-            $like->delete();
-        }
-
-        foreach($follows as $follow) {
-            $follow->delete();
-        }
 
         //logout the user and delete them!
         Auth::logout();

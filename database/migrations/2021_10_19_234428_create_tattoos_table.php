@@ -15,7 +15,7 @@ class CreateTattoosTable extends Migration {
         Schema::create('tattoos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('tattoo_image_name');
             $table->string('description')->nullable();
             $table->timestamps();

@@ -8,6 +8,9 @@
 </template>
 
 <script>
+
+    import { EventBus } from '../app.js';
+
     export default {
 
         props: ['tattooId', 'likes', 'count'],
@@ -26,6 +29,7 @@
                     .then(response => {
                         this.status = !this.status;
                         this.likeCount = response.data.count;
+                        EventBus.$emit('like', this.likeCount);
                     })
                     .catch(error => {
                         console.log(error);
@@ -36,6 +40,7 @@
                     .then(response => {
                         this.status = !this.status;
                         this.likeCount = response.data.count;
+                        EventBus.$emit('like', this.likeCount);
                     })
                     .catch(error => {
                         console.log(error);

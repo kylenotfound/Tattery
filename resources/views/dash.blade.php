@@ -63,7 +63,11 @@
             following-count="{{count($user->following)}}"
           />
         </div>
-        <span>Total Likes: {{ $user->getAllLikes() }}</span>
+        <div>
+          <likecounter
+            like-count="{{$user->getAllLikes()}}"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -92,7 +96,7 @@
                 <div>
                     <like
                         tattoo-id= "{{ $tattoo->getId() }}"
-                        likes= "{{ $user->isLiking($tattoo) }}"
+                        likes= "{{ auth()->user()->isLiking($tattoo) }}"
                         count= "{{ $tattoo->getNumOflikes() }}"
                     />
                 </div>
