@@ -101,11 +101,13 @@
                     />
                 </div>
                 <p>{{ $tattoo->getDescription() }}</p>
-                <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
-                  @csrf
-                  <label>Delete Post</label>
-                  <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
-                </form>
+                @if(auth()->user()->getDisplayName() == $user->getDisplayName())
+                  <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
+                    @csrf
+                    <label>Delete Post</label>
+                    <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
+                  </form>
+                @endif
               </div>
             @endforeach
             {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
