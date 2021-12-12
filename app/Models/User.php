@@ -107,8 +107,8 @@ class User extends Authenticatable {
     }
 
     public function like(Tattoo $tattoo) {
-        $like = Like::where('likers_user_id', '=', $this->id)
-            ->where('tattoo_id', '=', $tattoo->id)
+        $like = Like::where('likers_user_id', '=', $this->getId())
+            ->where('tattoo_id', '=', $tattoo->getId())
             ->get();
 
         if (count($like) != 0) {
@@ -116,16 +116,16 @@ class User extends Authenticatable {
         }
 
         $like = new Like;
-        $like->likers_user_id = $this->id;
-        $like->tattoo_id = $tattoo->id;
+        $like->likers_user_id = $this->getId();
+        $like->tattoo_id = $tattoo->getId();
         $like->save();
 
         return true;
     }
 
     public function unlike(Tattoo $tattoo) {
-        $like = Like::where('likers_user_id', '=', $this->id)
-            ->where('tattoo_id', '=', $tattoo->id);
+        $like = Like::where('likers_user_id', '=', $this->getId())
+            ->where('tattoo_id', '=', $tattoo->getId());
 
         if ($like == null) {
             return false;
@@ -137,7 +137,7 @@ class User extends Authenticatable {
     }
 
     public function isLiking(Tattoo $tattoo) {
-        $like = Like::where('likers_user_id', '=', $this->id)
+        $like = Like::where('likers_user_id', '=', $this->getId())
             ->where('tattoo_id', '=', $tattoo->getId())
             ->exists();
 

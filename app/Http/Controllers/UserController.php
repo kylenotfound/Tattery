@@ -71,8 +71,6 @@ class UserController extends Controller {
     public function deleteUser(Request $request) {
         $user = auth()->user();
         $tattoos = $user->tattoos;
-        $following = $user->following;
-        $followers = $user->followers;
 
         self::deleteUserContent($user, $tattoos);
 

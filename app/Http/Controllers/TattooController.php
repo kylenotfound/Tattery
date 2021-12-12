@@ -29,7 +29,7 @@ class TattooController extends Controller {
         }
 
         $tattoo = new Tattoo;
-        $tattoo->user_id = $user->id;
+        $tattoo->user_id = $user->getId();
         $tattoo->tattoo_image_name = $tattooNameToStore;
         $tattoo->location = $request->input('location');
         $tattoo->description = $request->input('description');
