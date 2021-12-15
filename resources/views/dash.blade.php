@@ -45,8 +45,8 @@
             <follow
               user-id="{{$user->getId()}}"
               state="{{auth()->user()->isFollowing($user)}}"
-              followers-count="{{$user->followers()->count()}}"
-              following-count="{{$user->following()->count()}}"
+              followers-count="{{count($user->followers)}}"
+              following-count="{{count($user->following)}}"
             />
             @endif
         </div>
@@ -57,11 +57,17 @@
         <br>
         <span>{{$user->getBio()}}</span>
         <br>
-        <followcounter
-            followers-count="{{$user->followers()->count()}}"
-            following-count="{{$user->following()->count()}}"
-        />
-        <span>Total Likes: {{ Helpers::getUserTotalLikeCount($user) }}</span>
+        <div>
+          <followcounter
+            followers-count="{{count($user->followers)}}"
+            following-count="{{count($user->following)}}"
+          />
+        </div>
+        <div>
+          <likecounter
+            like-count="{{$user->getAllLikes()}}"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -90,16 +96,18 @@
                 <div>
                     <like
                         tattoo-id= "{{ $tattoo->getId() }}"
-                        likes= "{{ $user->isLiking($tattoo) }}"
-                        count= "{{ Helpers::likes($tattoo) }}"
+                        likes= "{{ auth()->user()->isLiking($tattoo) }}"
+                        count= "{{ $tattoo->getNumOflikes() }}"
                     />
                 </div>
                 <p>{{ $tattoo->getDescription() }}</p>
-                <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
-                  @csrf
-                  <label>Delete Post</label>
-                  <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
-                </form>
+                @if(auth()->user()->getDisplayName() == $user->getDisplayName())
+                  <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
+                    @csrf
+                    <label>Delete Post</label>
+                    <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
+                  </form>
+                @endif
               </div>
             @endforeach
             {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->

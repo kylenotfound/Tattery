@@ -16,8 +16,8 @@ class FollowController extends Controller {
         $follower->follow($followee);
 
         return response()->json([
-            'followersCount' => $followee->followers()->count(),
-            'followingCount' => $followee->following()->count(),
+            'followersCount' => count($followee->followers),
+            'followingCount' => count($followee->following),
         ]);
     }
 
@@ -25,11 +25,11 @@ class FollowController extends Controller {
         $follower = auth()->user();
         $followee = User::findOrFail($id);
 
-        $followee->revokeFollower($follower);
+        $follower->unfollow($followee);
 
         return response()->json([
-            'followersCount' => $followee->followers()->count(),
-            'followingCount' => $followee->following()->count(),
+            'followersCount' => count($followee->followers),
+            'followingCount' => count($followee->following),
         ]);
     }
 }

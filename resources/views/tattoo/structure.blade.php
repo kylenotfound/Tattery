@@ -13,8 +13,8 @@
         <div class="card-footer">
             <like
                 tattoo-id= "{{ $tattoo->getId() }}"
-                likes= "{{ $user->isLiking($tattoo)}}"
-                count= "{{ Helpers::likes($tattoo) }}"
+                likes= "{{ auth()->user()->isLiking($tattoo) }}"
+                count= "{{ $tattoo->getNumOflikes() }}"
             />
         </div>
     </div>
