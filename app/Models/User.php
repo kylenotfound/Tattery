@@ -36,15 +36,17 @@ class User extends Authenticatable {
      *
      * followee_user_id corresponds to the user that a user is following
      * therefore a user is the followee to many other users.
+     *
+     * We include the whereNull('deleted_at') to ignore trashed records
      */
 
     public function followers() {
-        return $this->belongsToMany(User::class, 'follows', 'followee_user_id', 'follower_user_id');
+        return $this->belongsToMany(User::class, 'follows', 'followee_user_id', 'follower_user_id')->whereNull('deleted_at');
     }
 
 
     public function following() {
-        return $this->belongsToMany(User::class, 'follows', 'follower_user_id', 'followee_user_id');
+        return $this->belongsToMany(User::class, 'follows', 'follower_user_id', 'followee_user_id')->whereNull('deleted_at');
     }
 
     public function likes() {
@@ -107,12 +109,16 @@ class User extends Authenticatable {
     }
 
     public function like(Tattoo $tattoo) {
+        //need to use first() because get() returns collection
         $like = Like::where('likers_user_id', '=', $this->getId())
             ->where('tattoo_id', '=', $tattoo->getId())
-            ->get();
+            ->withTrashed()
+            ->first();
 
-        if (count($like) != 0) {
-            return false;
+        //if a like exists, restore it
+        if($like != null) {
+            $like->restore();
+            return true;
         }
 
         $like = new Like;
@@ -163,9 +169,15 @@ class User extends Authenticatable {
     }
 
     public function follow(User $userWeAreFollowing) {
-        //If the user is already following the user and they try to follow again
-        if ($this->isFollowing($userWeAreFollowing)) {
-            return false;
+
+        $follow = Follow::withTrashed()
+            ->where('follower_user_id', $this->getId())
+            ->where('followee_user_id', $userWeAreFollowing->getId())
+            ->first();
+
+        if ($follow != null) {
+            $follow->restore();
+            return true;
         }
 
         $follow = new Follow;
@@ -195,7 +207,7 @@ class User extends Authenticatable {
     public function isFollowing(User $followee) {
         //checking if $this user is a follower of the $followee
         $follow = Follow::where('follower_user_id', $this->getId())
-            ->where('followee_user_id', $followee->getId())->exists();
+            ->where('followee_user_id', $followee->getId())->first();
 
         if ($follow == null) {
             return false;
