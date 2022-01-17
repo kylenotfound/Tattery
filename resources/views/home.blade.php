@@ -21,7 +21,7 @@
     @endif
 
     <div class="container">
-      <div>
+      <div class="card-deck">
         @if(count($tattoos) == 0)
             <span>No posts to display.</span>
         @endif

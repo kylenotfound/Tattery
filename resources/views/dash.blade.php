@@ -85,35 +85,47 @@
     <div class="content-section" id="section1">
       <!-- This user's posts -->
       <div>
-        <div>
+        <div class="card-deck" style="padding-bottom: 20px">
             @if(count($tattoos) == 0)
               <span>No posts to display.</span>
             @endif
             @foreach($tattoos as $tattoo)
-              <div class="card border-dark mb-2 align-items-center" style="width: 275px">
-              <p><i class='fas fa-map-marker-alt'></i>{{ $tattoo->getLocation() }}</p>
-              <img src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
-                <div>
-                    <like
-                        tattoo-id= "{{ $tattoo->getId() }}"
-                        likes= "{{ auth()->user()->isLiking($tattoo) }}"
-                        count= "{{ $tattoo->getNumOflikes() }}"
-                    />
+              <div class="card-deck" style="padding-bottom: 20px">
+                <div class="container">
+                  <div class="card border-dark mb-2" style="width: 300px; height: 450px">
+                    <div class="card-header" style="height: 70px">
+                      <img src="{{Helpers::getUserAvatar($tattoo->user)}}" width="35px" height="35px" class="rounded-circle"></img>
+                      <a href="{{route('dash', ['id' => $tattoo->user->getDisplayName()])}}">{{$tattoo->user->getDisplayName()}}</a>
+                      @if($tattoo->getLocation() != null)
+                        <p style="padding-left: 38px"><i class='fas fa-map-marker-alt'></i> {{ $tattoo->getLocation() }}</p>
+                      @endif
+                    </div>
+                    <div class="card-body align-items-center" style="width: 275px">
+                        <img class="cover" src="{{Helpers::getUsersTattoos($tattoo, $user)}}" width="250px" height="250px" />
+                        <div>
+                          <like
+                              tattoo-id= "{{ $tattoo->getId() }}"
+                              likes= "{{ auth()->user()->isLiking($tattoo) }}"
+                              count= "{{ $tattoo->getNumOflikes() }}"
+                          />
+                        </div>
+                        <span>{{$tattoo->getDescription()}}</span>
+                        @if(auth()->user()->getDisplayName() == $user->getDisplayName())
+                          <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
+                            @csrf
+                            <input type="submit" value="Delete" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
+                          </form>
+                        @endif
+                    </div>
+                  </div>
                 </div>
-                <p>{{ $tattoo->getDescription() }}</p>
-                @if(auth()->user()->getDisplayName() == $user->getDisplayName())
-                  <form action="{{route('tattoo.delete', ['id' => $tattoo->getId()])}}" method="POST">
-                    @csrf
-                    <label>Delete Post</label>
-                    <input type="submit" onClick="return confirm('Are you sure you want to delete your tattoo?')"></input>
-                  </form>
-                @endif
               </div>
             @endforeach
             {{$tattoos->links()}} <!--Links to another subpage if there are more than the paginated tattoos -->
         </div>
       </div>
     </div>
+  
 
     <div class="content-section" id="section2">
       <!--If the user logged in is the same user that owns the profile, display profile customization features -->
