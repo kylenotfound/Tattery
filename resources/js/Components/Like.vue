@@ -1,8 +1,16 @@
 <template>
 
     <section class="section">
-         <button class="btn btn-primary p-2" @click="likeTattoo" v-text="buttonText"></button>
-         <span v-text="countText"></span>
+         <div v-if="this.status">
+            <button @click="likeTattoo" class="btn btn-link shadow-none" style="border-radius: 0em;">
+                <span class="text-danger"><i class="fas fa-heart"></i></span></button>
+            <span v-text="countText"></span>
+        </div>
+        <div v-else>
+            <button @click="likeTattoo" class="btn btn-link shadow-none" style="border-radius: 0em;">
+                <span class="text-danger"><i class="far fa-heart"></i></span></button>
+            <span v-text="countText"></span>
+        </div>
     </section>
 
 </template>
@@ -50,12 +58,8 @@
         },
 
         computed: {
-            buttonText() {
-                return (this.status) ? 'Unlike' : 'Like';
-            },
-
             countText() {
-                return "Likes: " + this.likeCount;
+                return this.likeCount + " Likes";
             }
         },
 
