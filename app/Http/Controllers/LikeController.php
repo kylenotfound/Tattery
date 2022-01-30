@@ -21,7 +21,8 @@ class LikeController extends Controller {
         $user->like($tattoo);
 
         return response()->json([
-            'count' => $tattoo->getNumOfLikes()
+            'count' => $tattoo->getNumOfLikes(),
+            'totalCount' => $user->getAllLikes()
         ]);
     }
 
@@ -35,7 +36,8 @@ class LikeController extends Controller {
         $totalLikesOnTattoo = $tattoo->likes;
 
         return response()->json([
-            'count' => $tattoo->getNumOfLikes()
+            'count' => $tattoo->getNumOfLikes(),
+            'totalCount' => $user->getAllLikes()
         ]);
     }
 

@@ -23,7 +23,7 @@
         },
 
         created() {
-            EventBus.$on('like', (data) => {
+            EventBus.$on('totalLikes', (data) => {
                 this.likes = data;
             });
 
