@@ -38,6 +38,7 @@
                         this.status = !this.status;
                         this.likeCount = response.data.count;
                         EventBus.$emit('like', this.likeCount);
+                        EventBus.$emit('totalLikes', response.data.totalCount);
                     })
                     .catch(error => {
                         console.log(error);
@@ -49,6 +50,7 @@
                         this.status = !this.status;
                         this.likeCount = response.data.count;
                         EventBus.$emit('like', this.likeCount);
+                        EventBus.$emit('totalLikes', response.data.totalCount);
                     })
                     .catch(error => {
                         console.log(error);
