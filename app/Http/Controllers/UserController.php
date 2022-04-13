@@ -19,10 +19,17 @@ class UserController extends Controller {
         if ($user == null) {
             return view('home')->withErrors(['user not found' => 'user does not exist']);
         }
-        return view('dash', [
+        return view('dash.index', [
             'user' => $user,
             'avatar' => Helpers::getUserAvatar($user),
             'tattoos' => $tattoos
+        ]);
+    }
+
+    public function editProfile($id) {
+        $user = User::where('display_name', $id)->first();
+        return view('dash.edit', [
+            'user' => $user
         ]);
     }
 
@@ -30,8 +37,8 @@ class UserController extends Controller {
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'min:2|max:36',
-            'new_display_name' => 'min:3|max:16',
+            'name' => 'nullable|min:2|max:36',
+            'new_display_name' => 'nullable|min:3|max:16',
             'bio' => 'max:256|nullable',
             'pronouns' => 'max:15|nullable',
             'avatar' => 'image|nullable',

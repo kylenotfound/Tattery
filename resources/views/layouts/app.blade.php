@@ -12,7 +12,7 @@
         <!-- Scripts -->
         <script src="{{ asset('js/compiled/app.js') }}" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
-        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <script src="https://kit.fontawesome.com/07b7751319.js" crossorigin="anonymous"></script>
 
         <!-- Fonts -->
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -75,8 +75,9 @@
                         {{ Auth::user()->getDisplayName() }}
                       </a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{route('dash', ['id' => Auth::user()->getDisplayName()])}}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>Profile</a>
-                        <a class="dropdown-item" href="{{route('user.settings', ['id' => Auth::user()->getDisplayName()])}}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>Settings</a>
+                        <a class="dropdown-item" href="{{ route('dash', ['id' => auth()->user()->getDisplayName()])}}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>Profile</a>
+                        <a class="dropdown-item" href="{{ route('dash.edit_profile', ['id' => auth()->user()->getDisplayName()])}}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>Edit Profile</a>
+                        <a class="dropdown-item" href="{{ route('user.settings', ['id' => auth()->user()->getDisplayName()])}}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>Settings</a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                           document.getElementById('logout-form').submit();">
                           {{ __('Logout') }}

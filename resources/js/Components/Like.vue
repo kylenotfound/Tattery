@@ -1,6 +1,6 @@
 <template>
 
-    <section class="section">
+    <section class="section pb-2 mb-2">
          <div v-if="this.status">
             <button @click="likeTattoo" class="btn btn-link shadow-none" style="border-radius: 0em;">
                 <span class="text-danger"><i class="fas fa-heart"></i></span></button>

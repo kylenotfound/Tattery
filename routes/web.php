@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function() {
      * User Profile
      */
     Route::get('/dash/{id}', [App\Http\Controllers\UserController::class, 'index'])->name('dash');
+    Route::get('/dash/{id}/edit', [App\Http\Controllers\UserController::class, 'editProfile'])->name('dash.edit_profile');
     Route::post('/dash/update_profile/{id}', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('dash.update_profile');
     Route::post('/dash/{id}/delete', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('user.delete');
 

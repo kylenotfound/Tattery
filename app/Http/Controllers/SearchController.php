@@ -14,7 +14,8 @@ class SearchController extends Controller {
 
         $searchTerm = $request->input('search-term');
 
-        $searchedUser = User::where('display_name', '=', $searchTerm)->first();
+        //TODO Bad
+        $searchedUser = User::where('display_name', 'LIKE', "%{$searchTerm}%")->first();
 
         if ($searchedUser == null) {
             return redirect()->back()->withErrors(["user not found" => "There is no user profile with that username!"]);
